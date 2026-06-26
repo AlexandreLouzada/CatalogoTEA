@@ -5,21 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Catálogo TEA — Demo Estática</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* Pequenos ajustes visuais */
-    .pill { @apply inline-flex items-center rounded-full px-3 py-1 text-xs border; }
-    .card { @apply rounded-3xl border p-4; }
-    .btn { @apply inline-flex items-center gap-2 rounded-2xl border px-3 py-1 text-sm; }
-    .btn-primary { @apply rounded-2xl px-4 py-2 bg-slate-900 text-white; }
-    .navbtn { @apply px-3 py-1 rounded-xl; }
-    .navbtn-active { @apply bg-slate-900 text-white; }
-    .navbtn-idle { @apply hover:bg-slate-100 border; }
-  </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
   <div id="root"></div>
 
-  <!-- React 18 UMD + Babel for JSX -->
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -42,7 +31,7 @@
         plataformas: ["iOS"],
         preco: "Pago",
         finalidade: "Apoiar comunicação expressiva por pictogramas.",
-        exemplosUso: ["Rotinas diárias (comer, beber, banheiro)", "Comunicar preferências em sala", "Quadros de escolha guiada"],
+        exemplosUso: ["Rotinas diárias (comer, beber, banheiro)", "Comunicar preferências in sala", "Quadros de escolha guiada"],
         rating: 4.6,
         votos: 214
       },
@@ -84,7 +73,7 @@
         plataformas: ["Web", "Android"],
         preco: "Freemium",
         finalidade: "Ensinar scripts sociais em contextos do dia a dia.",
-        exemplosUso: ["Como pedir ajuda", "Como iniciar conversas", "Como lidar com frustrações"],
+        examplesUso: ["Como pedir ajuda", "Como iniciar conversas", "Como lidar com frustrações"],
         rating: 3.9,
         votos: 77
       }
@@ -96,22 +85,28 @@
       const stars = [0,1,2,3,4].map(i => value >= i+1 ? "full" : value > i ? "half" : "empty");
       return (
         <div className="flex items-center gap-1" aria-label={"Avaliação: " + value.toFixed(1) + " de 5"}>
-          {stars.map((s,i)=> (
-            <span key={i} aria-hidden className={s==="empty" ? "opacity-40" : ""} style={{fontSize: size}}>
-              {s==="half" ? "⭐︎" : "⭐"}
-            </span>
-          ))}
-          <span className="ml-1 text-sm">{value.toFixed(1)}</span>
+          <div className="flex gap-0.5" aria-hidden="true">
+            {stars.map((s,i)=> (
+              <span key={i} className={s==="empty" ? "opacity-30" : ""} style={{fontSize: size}}>
+                {s==="half" ? "⭐︎" : "⭐"}
+              </span>
+            ))}
+          </div>
+          <span className="ml-1 text-sm font-medium">{value.toFixed(1)}</span>
         </div>
       );
     }
 
-    const Pill = ({children}) => <span className="pill">{children}</span>;
+    const Pill = ({children}) => (
+      <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium border border-slate-200 bg-white text-slate-600">
+        {children}
+      </span>
+    );
 
     const DEFAULT_PREFS = { modoFoco:false, leituraSimples:false, altoContraste:false, reduzirAnimacoes:true };
 
     function App(){
-      const [route, setRoute] = useState("home"); // home|buscar|lista|detalhe|recomendacoes|guia|comunidade|sobre
+      const [route, setRoute] = useState("home"); 
       const [prefs, setPrefs] = useState(DEFAULT_PREFS);
       const [query, setQuery] = useState("");
       const [selCats, setSelCats] = useState([]);
@@ -133,20 +128,21 @@
 
       const current = useMemo(()=> MOCK_APPS.find(a=>a.id===currentId) || null, [currentId]);
 
-      function toggle(arr, v){ return arr.includes(v) ? arr.filter(x=>x!==v) : [...arr, v]; }
       function openDetalhe(id){ setCurrentId(id); setRoute("detalhe"); }
 
       return (
-        <div className={classNames("min-h-screen", prefs.altoContraste ? "bg-white text-black" : "bg-slate-50 text-slate-800")}
+        <div className={classNames("min-h-screen flex flex-col", prefs.altoContraste ? "bg-white text-black" : "bg-slate-50 text-slate-800")}
              style={{scrollBehavior: prefs.reduzirAnimacoes ? "auto" : "smooth"}}>
           <Header route={route} setRoute={setRoute} onOpenPrefs={()=>setShowPrefs(true)} />
 
           {prefs.modoFoco && (
-            <div className="sticky top-0 z-50 bg-yellow-100 border-b p-2 text-center text-sm">Modo foco ativo: apenas conteúdo essencial é exibido.</div>
+            <div className="sticky top-[57px] z-30 bg-yellow-100 border-b border-yellow-200 p-2 text-center text-sm font-medium text-yellow-800">
+              Modo foco ativo: apenas conteúdo essencial é exibido.
+            </div>
           )}
 
-          <main className={classNames("mx-auto max-w-6xl p-4 md:p-6", prefs.modoFoco && "max-w-3xl")} aria-live="polite">
-            {route==="home" && <Home onStart={()=>setRoute("buscar")} />}
+          <main className={classNames("mx-auto w-full max-w-6xl p-4 md:p-6 flex-grow", prefs.modoFoco && "max-w-3xl")} aria-live="polite">
+            {route==="home" && <Home onStart={()=>setRoute("buscar")} onOpen={openDetalhe} />}
             {route==="buscar" && (
               <Buscar
                 query={query} setQuery={setQuery}
@@ -182,10 +178,12 @@
 
     function Header({route, setRoute, onOpenPrefs}){
       return (
-        <header className="sticky top-0 z-40 backdrop-blur bg-white/80 border-b">
+        <header className="sticky top-0 z-40 backdrop-blur bg-white/80 border-b border-slate-200">
           <div className="mx-auto max-w-6xl px-4 py-3 flex items-center gap-3">
-            <div className="flex items-center gap-2 font-semibold">🛡️ <span>Catálogo TEA</span></div>
-            <nav className="ml-auto hidden md:flex items-center gap-4 text-sm">
+            <div className="flex items-center gap-2 font-semibold text-slate-900 cursor-pointer" onClick={()=>setRoute('home')}>
+              🛡️ <span>Catálogo TEA</span>
+            </div>
+            <nav className="ml-auto hidden md:flex items-center gap-2 text-sm">
               <NavBtn active={route==='home'} onClick={()=>setRoute('home')}>Home</NavBtn>
               <NavBtn active={route==='buscar'} onClick={()=>setRoute('buscar')}>Buscar Apps</NavBtn>
               <NavBtn active={route==='lista'} onClick={()=>setRoute('lista')}>Lista</NavBtn>
@@ -194,7 +192,7 @@
               <NavBtn active={route==='comunidade'} onClick={()=>setRoute('comunidade')}>Comunidade</NavBtn>
               <NavBtn active={route==='sobre'} onClick={()=>setRoute('sobre')}>Sobre</NavBtn>
             </nav>
-            <button className="ml-2 inline-flex items-center gap-2 rounded-xl border px-3 py-1 text-sm" onClick={onOpenPrefs} aria-label="Abrir preferências de acessibilidade">
+            <button className="ml-2 inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium hover:bg-slate-50" onClick={onOpenPrefs} aria-label="Abrir preferências de acessibilidade">
               ⚙️ <span className="hidden sm:inline">Preferências</span>
             </button>
           </div>
@@ -204,40 +202,51 @@
 
     function NavBtn({children, active, onClick}){
       return (
-        <button onClick={onClick} className={classNames("navbtn", active ? "navbtn-active" : "navbtn-idle")}>{children}</button>
+        <button onClick={onClick} className={classNames(
+          "px-3 py-1.5 rounded-xl transition-colors text-sm font-medium", 
+          active ? "bg-slate-900 text-white" : "hover:bg-slate-100 text-slate-600"
+        )}>
+          {children}
+        </button>
       );
     }
 
-    function Home({onStart}){
+    function Home({onStart, onOpen}){
       return (
-        <section className="grid md:grid-cols-2 gap-6 items-center">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold">Catálogo de Aplicativos para Pessoas Autistas</h1>
-            <p className="mt-3 text-slate-600">Encontre, compare e avalie aplicativos de educação, comunicação alternativa, habilidades sociais e regulação emocional, com foco em <strong>usabilidade inclusiva</strong>.</p>
-            <div className="mt-5 flex gap-3">
-              <button onClick={onStart} className="btn-primary">🔎 Começar agora</button>
-              <a className="btn" href="#" onClick={(e)=>{e.preventDefault(); onStart();}}>Ver apps populares</a>
+        <section className="grid md:grid-cols-2 gap-6 items-start mt-4">
+          <div className="space-y-4">
+            <h1 className="text-2xl md:text-4xl font-bold tracking-tight text-slate-950">Catálogo de Aplicativos para Pessoas Autistas</h1>
+            <p className="text-base text-slate-600 leading-relaxed">Encontre, compare e avalie aplicativos de educação, comunicação alternativa, habilidades sociais e regulação emocional, com foco em <strong className="text-slate-900">usabilidade inclusiva</strong>.</p>
+            <div className="pt-2 flex flex-wrap gap-3">
+              <button onClick={onStart} className="rounded-2xl px-5 py-2.5 bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors shadow-sm">
+                🔎 Começar agora
+              </button>
+              <button onClick={onStart} className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-2.5 font-medium hover:bg-slate-50 transition-colors">
+                Ver apps populares
+              </button>
             </div>
-            <ul className="mt-6 grid gap-2 text-sm">
-              <li className="inline-flex items-center gap-2">✅ Filtros por categoria, idade e acessibilidade</li>
-              <li className="inline-flex items-center gap-2">✅ Avaliação guiada por checklist inclusiva</li>
-              <li className="inline-flex items-center gap-2">✅ Modo de leitura simples e foco</li>
+            <ul className="pt-4 space-y-2 text-sm text-slate-600">
+              <li className="flex items-center gap-2">✅ Filtros por categoria, idade e acessibilidade</li>
+              <li className="flex items-center gap-2">✅ Avaliação guiada por checklist inclusiva</li>
+              <li className="flex items-center gap-2">✅ Modo de leitura simples e foco</li>
             </ul>
           </div>
-          <div className="rounded-3xl border p-6">
-            <h2 className="font-semibold mb-3">Destaques</h2>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {MOCK_APPS.slice(0,4).map(a => (
-                <div key={a.id} className="rounded-2xl border p-3">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="font-semibold text-sm">{a.nome}</h3>
-                      <Stars value={a.rating} />
+          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 className="font-bold text-lg text-slate-900 mb-4">Destaques</h2>
+            <div className="grid sm:grid-cols-1 gap-4">
+              {MOCK_APPS.slice(0,2).map(a => (
+                <div key={a.id} className="rounded-2xl border border-slate-100 bg-slate-50/50 p-4 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-start justify-between gap-2">
+                      <h3 className="font-semibold text-slate-900">{a.nome}</h3>
+                      <button onClick={() => onOpen(a.id)} className="text-xs font-medium text-slate-600 underline hover:text-slate-900">
+                        Detalhes
+                      </button>
                     </div>
-                    <button className="text-xs underline">Detalhes</button>
+                    <div className="mt-1"><Stars value={a.rating} size={14} /></div>
+                    <p className="mt-2 text-sm text-slate-600 line-clamp-2">{a.descricao}</p>
                   </div>
-                  <p className="mt-2 text-sm text-slate-600">{a.descricao}</p>
-                  <div className="mt-3 flex flex-wrap gap-2">
+                  <div className="mt-3 flex flex-wrap gap-1.5">
                     {a.categorias.map(c => <Pill key={c}>{c}</Pill>)}
                   </div>
                 </div>
@@ -251,33 +260,37 @@
     function Buscar({query,setQuery,selCats,setSelCats,selIdades,setSelIdades,selAcess,setSelAcess,onVerLista,prefs}){
       const toggle = (arr, v) => arr.includes(v) ? arr.filter(x=>x!==v) : [...arr, v];
       return (
-        <section className="space-y-6">
-          <div className="card">
-            <h2 className="font-bold text-lg">Buscar Aplicativos</h2>
-            <label className="mt-3 block text-sm">Digite o nome do app ou palavra-chave</label>
-            <div className="mt-1 flex gap-2">
-              <input aria-label="Campo de busca" className="w-full rounded-2xl border px-3 py-2"
+        <section className="space-y-6 mt-2">
+          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 className="font-bold text-xl text-slate-900">Buscar Aplicativos</h2>
+            <label htmlFor="search-input" className="mt-3 block text-sm font-medium text-slate-600">Digite o nome do app ou palavra-chave</label>
+            <div className="mt-1.5 flex gap-2">
+              <input id="search-input" className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-slate-900/10"
                 placeholder={prefs.leituraSimples ? "Buscar apps..." : "Ex.: comunicação, alfabetização, pictogramas"}
                 value={query} onChange={e=>setQuery(e.target.value)} />
-              <button className="btn-primary" onClick={onVerLista}>🔎 Buscar</button>
+              <button className="rounded-2xl px-5 py-2.5 bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors" onClick={onVerLista}>
+                Buscar
+              </button>
             </div>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-3 gap-4">
             <FilterCard title="Filtros por Categoria">
               <CheckGrid values={CATEGORIAS} selected={selCats} onToggle={(v)=>setSelCats(toggle(selCats,v))} />
             </FilterCard>
-            <FilterCard title="Filtros por Idade/Público">
+            <FilterCard title="Filtros por Idade">
               <CheckGrid values={IDADES} selected={selIdades} onToggle={(v)=>setSelIdades(toggle(selIdades,v))} />
             </FilterCard>
-            <FilterCard title="Filtros de Acessibilidade">
+            <FilterCard title="Acessibilidade">
               <CheckGrid values={ACESS} selected={selAcess} onToggle={(v)=>setSelAcess(toggle(selAcess,v))} />
-              <p className="mt-2 text-xs text-slate-500">Dica: selecione "Baixo estímulo sensorial" para reduzir estímulos visuais/sonoros.</p>
+              <p className="mt-3 text-xs text-slate-500 leading-relaxed">Dica: selecione "Baixo estímulo sensorial" para reduzir intensidade visual/sonora.</p>
             </FilterCard>
           </div>
 
           <div className="flex justify-end">
-            <button onClick={onVerLista} className="btn">➡️ Ver resultados</button>
+            <button onClick={onVerLista} className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-2.5 font-medium hover:bg-slate-50 transition-colors text-sm">
+              ➡️ Ver resultados
+            </button>
           </div>
         </section>
       );
@@ -285,8 +298,11 @@
 
     function FilterCard({title, children}){
       return (
-        <div className="rounded-3xl border p-4">
-          <div className="flex items-center gap-2 mb-2"><span>🧰</span><h3 className="font-semibold">{title}</h3></div>
+        <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="flex items-center gap-2 mb-3 border-b border-slate-100 pb-2">
+            <span aria-hidden="true">🧰</span>
+            <h3 className="font-bold text-sm text-slate-900">{title}</h3>
+          </div>
           {children}
         </div>
       );
@@ -294,10 +310,10 @@
 
     function CheckGrid({values, selected, onToggle}){
       return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <div className="space-y-2">
           {values.map(v => (
-            <label key={v} className="flex items-center gap-2 text-sm cursor-pointer">
-              <input type="checkbox" className="w-4 h-4" checked={selected.includes(v)} onChange={()=>onToggle(v)} />
+            <label key={v} className="flex items-center gap-2.5 text-sm text-slate-600 cursor-pointer select-none hover:text-slate-900">
+              <input type="checkbox" className="rounded text-slate-900 focus:ring-slate-900 w-4 h-4 accent-slate-900" checked={selected.includes(v)} onChange={()=>onToggle(v)} />
               <span>{v}</span>
             </label>
           ))}
@@ -307,34 +323,39 @@
 
     function Lista({items, fav, setFav, onOpen, leituraSimples}){
       return (
-        <section>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="font-bold text-lg">{items.length} aplicativos encontrados</h2>
-            <div className="text-sm text-slate-500">Clique em um item para ver detalhes e checklist inclusiva.</div>
+        <section className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
+            <h2 className="font-bold text-xl text-slate-900">{items.length} aplicativos encontrados</h2>
+            <div className="text-xs text-slate-500">Selecione um card para checar critérios técnicos inclusivos.</div>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {items.map(a => (
-              <article key={a.id} className="rounded-3xl border p-4 hover:shadow">
-                <div className="flex items-start justify-between gap-2">
-                  <div>
-                    <h3 className="font-semibold">{a.nome}</h3>
-                    <p className="text-sm text-slate-600 mt-1">{leituraSimples ? a.descricao.split(".")[0] + "." : a.descricao}</p>
+              <article key={a.id} className="rounded-3xl border border-slate-200 bg-white p-5 flex flex-col justify-between hover:shadow-md transition-shadow">
+                <div>
+                  <div className="flex items-start justify-between gap-4">
+                    <h3 className="font-bold text-base text-slate-900">{a.nome}</h3>
+                    <button onClick={()=> setFav(fav.includes(a.id) ? fav.filter(i=>i!==a.id) : [...fav, a.id])}
+                            className="text-lg p-0.5"
+                            aria-label={fav.includes(a.id)?"Remover dos favoritos":"Adicionar aos favoritos"}>
+                      {fav.includes(a.id) ? "💗" : "🤍"}
+                    </button>
                   </div>
-                  <button onClick={()=> setFav(fav.includes(a.id) ? fav.filter(i=>i!==a.id) : [...fav, a.id])}
-                          aria-label={fav.includes(a.id)?"Remover dos favoritos":"Adicionar aos favoritos"}>
-                    {fav.includes(a.id) ? "💗" : "🤍"}
+                  <div className="mt-1 flex items-center gap-2">
+                    <Stars value={a.rating} size={14} />
+                    <span className="text-xs text-slate-400">({a.votos} votos)</span>
+                  </div>
+                  <p className="text-sm text-slate-600 mt-3 leading-relaxed">
+                    {leituraSimples ? a.descricao.split(".")[0] + "." : a.descricao}
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-1">
+                    {a.categorias.map(c=> <Pill key={c}>{c}</Pill>)}
+                  </div>
+                </div>
+                <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                  <span className="font-medium text-slate-700">{a.preco}</span>
+                  <button onClick={()=>onOpen(a.id)} className="inline-flex items-center gap-1 font-semibold text-slate-900 hover:underline">
+                    Ver detalhes ➡️
                   </button>
-                </div>
-                <div className="mt-2"><Stars value={a.rating} /><span className="text-xs text-slate-500">({a.votos} avaliações)</span></div>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {a.categorias.map(c=> <Pill key={c}>{c}</Pill>)}
-                </div>
-                <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-500">
-                  <Pill>Plataformas: {a.plataformas.join(", ")}</Pill>
-                  <Pill>{a.preco}</Pill>
-                </div>
-                <div className="mt-4 flex justify-end">
-                  <button onClick={()=>onOpen(a.id)} className="btn">Ver detalhes ➡️</button>
                 </div>
               </article>
             ))}
@@ -352,12 +373,13 @@
         {k:"Baixo estímulo sensorial", ok: app.acessibilidade.includes("Baixo estímulo sensorial")},
       ];
       return (
-        <div className="rounded-2xl border p-3">
-          <h4 className="font-semibold mb-2">Avaliação de Usabilidade Inclusiva (checklist)</h4>
-          <ul className="space-y-1 text-sm">
+        <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 shadow-sm">
+          <h4 className="font-bold text-sm text-slate-900 mb-3">Avaliação de Usabilidade Inclusiva (Checklist)</h4>
+          <ul className="space-y-2 text-sm text-slate-700">
             {checks.map(item => (
-              <li key={item.k} className="flex items-center gap-2">
-                <span>{item.ok ? "✅" : "⬜"}</span><span>{item.k}</span>
+              <li key={item.k} className="flex items-center gap-2.5">
+                <span className="text-base">{item.ok ? "✅" : "⬜"}</span>
+                <span className={item.ok ? "font-medium text-slate-900" : "text-slate-500"}>{item.k}</span>
               </li>
             ))}
           </ul>
@@ -376,61 +398,82 @@
       }
 
       return (
-        <section className="space-y-4">
-          <button onClick={onBack} className="text-sm underline">⬅️ Voltar</button>
+        <section className="space-y-4 mt-2">
+          <button onClick={onBack} className="text-sm font-medium text-slate-600 hover:text-slate-900 flex items-center gap-1">
+            ⬅️ Voltar para a lista
+          </button>
 
-          <div className="rounded-3xl border p-4">
-            <div className="flex items-start justify-between gap-3">
+          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b border-slate-100 pb-5">
               <div>
-                <h2 className="font-bold text-xl">{app.nome}</h2>
-                <p className="mt-1 text-slate-600">{leituraSimples ? app.descricao.split(".")[0] + "." : app.descricao}</p>
-                <div className="mt-2 flex flex-wrap gap-2 text-xs text-slate-500">
-                  <Pill>Finalidade: {app.finalidade}</Pill>
+                <h2 className="font-bold text-2xl text-slate-900">{app.nome}</h2>
+                <p className="mt-2 text-base text-slate-600 leading-relaxed max-w-2xl">
+                  {leituraSimples ? app.descricao.split(".")[0] + "." : app.descricao}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-500">
                   <Pill>Plataformas: {app.plataformas.join(", ")}</Pill>
                   <Pill>Modelo: {app.preco}</Pill>
                 </div>
-                <div className="mt-2"><Stars value={app.rating} /><span className="text-xs text-slate-500">({app.votos} avaliações)</span></div>
+                <div className="mt-3 flex items-center gap-2">
+                  <Stars value={app.rating} size={16} />
+                  <span className="text-xs text-slate-400">({app.votos} avaliações da comunidade)</span>
+                </div>
               </div>
-              <button onClick={()=> setFav(fav.includes(app.id) ? fav.filter(i=>i!==app.id) : [...fav, app.id])} className="btn">
+              <button onClick={()=> setFav(fav.includes(app.id) ? fav.filter(i=>i!==app.id) : [...fav, app.id])} 
+                      className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 px-4 py-2 text-sm font-medium hover:bg-slate-50 self-start">
                 {fav.includes(app.id) ? "💗 Favorito" : "🤍 Favoritar"}
               </button>
             </div>
 
-            <div className="mt-4 grid md:grid-cols-3 gap-4">
-              <div className="md:col-span-2 space-y-4">
-                <div className="rounded-2xl border p-3">
-                  <h4 className="font-semibold mb-2">Exemplos de Uso</h4>
-                  <ul className="list-disc pl-5 text-sm space-y-1">
+            <div className="mt-6 grid md:grid-cols-3 gap-6">
+              <div className="md:col-span-2 space-y-5">
+                <div className="rounded-2xl border border-slate-100 bg-slate-50/50 p-4">
+                  <h4 className="font-bold text-sm text-slate-900 mb-2.5">Cenários Práticos de Exemplo</h4>
+                  <ul className="list-disc pl-5 text-sm text-slate-600 space-y-1.5">
                     {app.exemplosUso.map((e,i)=> <li key={i}>{e}</li>)}
                   </ul>
                 </div>
                 <ChecklistInclusiva app={app} />
               </div>
+
               <aside className="space-y-4">
-                <div className="rounded-2xl border p-3">
-                  <h4 className="font-semibold mb-2">Informações</h4>
-                  <div className="space-y-2 text-sm">
-                    <div><strong>Público-alvo:</strong> {app.idades.join(", ")}</div>
-                    <div className="flex flex-wrap gap-2"><strong>Recursos:</strong> {app.acessibilidade.map(ac=> <Pill key={ac}>{ac}</Pill>)}</div>
+                <div className="rounded-2xl border border-slate-200 p-4 bg-white shadow-sm">
+                  <h4 className="font-bold text-sm text-slate-900 mb-3">Informações Técnicas</h4>
+                  <div className="space-y-3 text-xs">
+                    <div>
+                      <strong className="block text-slate-500 mb-1">Público-alvo:</strong> 
+                      <span className="text-sm font-medium text-slate-800">{app.idades.join(", ")}</span>
+                    </div>
+                    <div>
+                      <strong className="block text-slate-500 mb-1">Recursos Ativos:</strong> 
+                      <div className="flex flex-wrap gap-1 mt-1">{app.acessibilidade.map(ac=> <Pill key={ac}>{ac}</Pill>)}</div>
+                    </div>
                   </div>
                 </div>
-                <div className="rounded-2xl border p-3">
-                  <h4 className="font-semibold mb-2">Avaliar este app</h4>
-                  <div className="flex items-center gap-1">
+
+                <div className="rounded-2xl border border-slate-200 p-4 bg-white shadow-sm">
+                  <h4 className="font-bold text-sm text-slate-900 mb-2">Avaliar este app</h4>
+                  <div className="flex items-center gap-1.5 my-2">
                     {[1,2,3,4,5].map(n => (
-                      <button key={n} onClick={()=>setNota(n)} aria-label={"Dar nota " + n} className={classNames("p-1 rounded", nota===n && "outline outline-2")}>⭐</button>
+                      <button key={n} onClick={()=>setNota(n)} aria-label={"Dar nota " + n} 
+                              className={classNames("p-1 text-xl rounded transition-transform", nota>=n ? "opacity-100 scale-110" : "opacity-40 hover:opacity-70")}>
+                        ⭐
+                      </button>
                     ))}
                   </div>
-                  <textarea value={coment} onChange={e=>setComent(e.target.value)} placeholder="Comentário (opcional)" className="mt-2 w-full rounded-xl border p-2 text-sm" rows="3"></textarea>
+                  <textarea value={coment} onChange={e=>setComent(e.target.value)} placeholder="Adicione observações sobre a usabilidade..." className="mt-2 w-full rounded-xl border border-slate-200 p-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-slate-900" rows="3"></textarea>
                   <div className="mt-2 flex justify-end">
-                    <button onClick={submit} className="btn">Enviar avaliação</button>
+                    <button onClick={submit} className="rounded-xl px-4 py-1.5 bg-slate-900 text-white text-xs font-medium hover:bg-slate-800">
+                      Enviar avaliação
+                    </button>
                   </div>
+                  
                   {!!avs.length && (
-                    <div className="mt-3 border-t pt-2 text-sm space-y-1">
+                    <div className="mt-4 border-t border-slate-100 pt-3 text-sm space-y-2">
                       {avs.map((a,i)=> (
-                        <div key={i} className="rounded-lg border p-2">
-                          <div className="flex items-center gap-2"><strong>Nota:</strong> {a.nota} / 5</div>
-                          {a.comentario && <p className="text-slate-600 mt-1">{a.comentario}</p>}
+                        <div key={i} className="rounded-xl border border-slate-100 bg-slate-50 p-2.5 text-xs">
+                          <div className="flex items-center gap-1 text-slate-900 font-bold">Nota: {a.nota} / 5</div>
+                          {a.comentario && <p className="text-slate-600 mt-1 italic">"{a.comentario}"</p>}
                         </div>
                       ))}
                     </div>
@@ -439,35 +482,25 @@
               </aside>
             </div>
           </div>
-
-          <div className="rounded-3xl border p-4">
-            <h3 className="font-semibold mb-2">Recomendações relacionadas</h3>
-            <div className="flex flex-wrap gap-3">
-              {MOCK_APPS.filter(a=> a.id!==app.id && a.categorias.some(c=> app.categorias.includes(c))).map(a=> (
-                <div key={a.id} className="rounded-2xl border px-3 py-2 text-sm inline-flex items-center gap-2">
-                  <span>{a.nome}</span>
-                  <span className="text-xs text-slate-500">{a.categorias[0]}</span>
-                </div>
-              ))}
-            </div>
-          </div>
         </section>
       );
     }
 
     function Recomendacoes({items, onOpen}){
       return (
-        <section>
-          <h2 className="font-bold text-lg">Top Apps mais bem avaliados</h2>
-          <div className="mt-3 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {items.slice().sort((a,b)=> b.rating - a.rating).slice(0,6).map(a=> (
-              <div key={a.id} className="rounded-3xl border p-4">
-                <div className="flex items-start justify-between">
-                  <h3 className="font-semibold">{a.nome}</h3>
-                  <button className="text-sm underline" onClick={()=>onOpen(a.id)}>Abrir</button>
+        <section className="space-y-4">
+          <h2 className="font-bold text-xl text-slate-900">Top Apps mais bem avaliados</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {items.slice().sort((a,b)=> b.rating - a.rating).map(a=> (
+              <div key={a.id} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm flex flex-col justify-between">
+                <div>
+                  <div className="flex items-start justify-between gap-2">
+                    <h3 className="font-bold text-base text-slate-900">{a.nome}</h3>
+                    <button className="text-xs font-semibold underline text-slate-600 hover:text-slate-900" onClick={()=>onOpen(a.id)}>Abrir</button>
+                  </div>
+                  <div className="mt-1.5"><Stars value={a.rating} size={14}/></div>
+                  <p className="text-sm text-slate-600 mt-3 leading-relaxed">{a.descricao}</p>
                 </div>
-                <div className="mt-1"><Stars value={a.rating}/><span className="text-xs text-slate-500">({a.votos})</span></div>
-                <p className="text-sm text-slate-600 mt-1">{a.descricao}</p>
               </div>
             ))}
           </div>
@@ -478,23 +511,22 @@
     function Guia(){
       return (
         <section className="space-y-4">
-          <div className="rounded-3xl border p-4">
-            <h2 className="font-bold text-lg">📘 Como navegar no catálogo</h2>
-            <ol className="list-decimal pl-6 text-sm mt-2 space-y-1">
-              <li>Use a busca para encontrar um app conhecido.</li>
-              <li>Ou aplique filtros por categoria, idade/público e acessibilidade.</li>
-              <li>Abra a página do app e verifique a checklist inclusiva.</li>
-              <li>Leia exemplos de uso e avaliações.</li>
-              <li>Instale, salve nos favoritos ou recomende.</li>
+          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 className="font-bold text-lg text-slate-900">📘 Como navegar no catálogo</h2>
+            <ol className="list-decimal pl-5 text-sm mt-3 space-y-2 text-slate-600">
+              <li>Use a barra de busca para encontrar softwares por palavras-chave diretas.</li>
+              <li>Filtre os repositórios por faixa etária ou demandas específicas de acessibilidade.</li>
+              <li>Acesse o detalhamento técnico para examinar a lista de conformidade inclusiva.</li>
+              <li>Consulte os cenários práticos de uso e contribua enviando avaliações metodológicas.</li>
             </ol>
           </div>
-          <div className="rounded-3xl border p-4">
-            <h3 className="font-semibold mb-2">Glossário rápido</h3>
-            <dl className="grid sm:grid-cols-2 gap-3 text-sm">
-              <div><dt className="font-medium">CAA</dt><dd>Comunicação Alternativa e Ampliada por símbolos/pictogramas.</dd></div>
-              <div><dt className="font-medium">Baixo estímulo sensorial</dt><dd>Interface com poucos elementos, animações suaves e sons opcionais.</dd></div>
-              <div><dt className="font-medium">Leitura simples</dt><dd>Textos resumidos, diretos, sem metáforas.</dd></div>
-              <div><dt className="font-medium">Checklist inclusiva</dt><dd>Lista de verificação rápida de recursos de acessibilidade.</dd></div>
+          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h3 className="font-bold text-base text-slate-900 mb-3">Glossário de Apoio</h3>
+            <dl className="grid sm:grid-cols-2 gap-4 text-sm text-slate-600">
+              <div><dt className="font-bold text-slate-900">CAA</dt><dd className="mt-0.5">Comunicação Alternativa e Ampliada baseada em representações visuais.</dd></div>
+              <div><dt className="font-bold text-slate-900">Baixo estímulo sensorial</dt><dd className="mt-0.5">Interfaces limpas com controle rigoroso de transições e ruído visual.</dd></div>
+              <div><dt className="font-bold text-slate-900">Leitura simples</dt><dd className="mt-0.5">Redação objetiva visando a redução de sobrecarga cognitiva.</dd></div>
+              <div><dt className="font-bold text-slate-900">Checklist inclusiva</dt><dd className="mt-0.5">Critérios direcionados à validação de recursos adaptativos.</dd></div>
             </dl>
           </div>
         </section>
@@ -504,19 +536,17 @@
     function Comunidade(){
       return (
         <section className="space-y-4">
-          <div className="rounded-3xl border p-4">
-            <h2 className="font-bold text-lg">👥 Experiências de Usuários</h2>
-            <ul className="mt-2 space-y-2 text-sm">
-              <li className="rounded-2xl border p-3"><strong>Prof. Ana</strong>: Usei o Calma+ antes das aulas e ajudou a reduzir ansiedade.</li>
-              <li className="rounded-2xl border p-3"><strong>Thiago (pai)</strong>: O Alfabetiza Fácil foi útil em sessões curtas em casa.</li>
-            </ul>
-          </div>
-          <div className="rounded-3xl border p-4">
-            <h3 className="font-semibold mb-2">💬 Fórum de dúvidas rápidas</h3>
-            <p className="text-sm text-slate-600">(Protótipo) Campo de pergunta e respostas com moderação.</p>
-            <input className="mt-2 w-full rounded-2xl border px-3 py-2" placeholder="Escreva sua dúvida..." />
-            <div className="mt-2 flex justify-end">
-              <button className="btn">Enviar</button>
+          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 className="font-bold text-xl text-slate-900">👥 Relatos de Experiências</h2>
+            <div className="mt-3 space-y-3">
+              <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4 text-sm text-slate-600">
+                <strong className="text-slate-900 block mb-1">Prof. Ana (Atendimento Educacional Especializado)</strong>
+                A aplicação do ecossistema de baixo estímulo reduziu visivelmente os níveis de fadiga cognitiva em ambiente escolar.
+              </div>
+              <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4 text-sm text-slate-600">
+                <strong className="text-slate-900 block mb-1">Thiago (Familiar/Cuidador)</strong>
+                A segmentação por rotinas previsíveis auxiliou na fixação e autonomia diária em ambiente doméstico.
+              </div>
             </div>
           </div>
         </section>
@@ -526,17 +556,9 @@
     function Sobre(){
       return (
         <section className="space-y-4">
-          <div className="rounded-3xl border p-4">
-            <h2 className="font-bold text-lg">Missão e objetivos</h2>
-            <p className="text-sm text-slate-700 mt-1">Facilitar a descoberta e adoção de tecnologias úteis para pessoas autistas, familiares e profissionais, com foco em acessibilidade e usabilidade inclusiva.</p>
-          </div>
-          <div className="rounded-3xl border p-4">
-            <h3 className="font-semibold">Parceiros e referências</h3>
-            <p className="text-sm text-slate-700 mt-1">(Espaço para logos e links de parceiros, diretrizes de acessibilidade e referências científicas).</p>
-          </div>
-          <div className="rounded-3xl border p-4">
-            <h3 className="font-semibold">Contato / suporte</h3>
-            <p className="text-sm text-slate-700 mt-1">email@exemplo.org — suporte via formulário acessível.</p>
+          <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 className="font-bold text-lg text-slate-900">Diretrizes do Projeto</h2>
+            <p className="text-sm text-slate-600 mt-2 leading-relaxed">Esse ambiente serve como um framework conceitual para catalogação sistemática de recursos digitais, validando parâmetros de IHC voltados ao Transtorno do Espectro Autista.</p>
           </div>
         </section>
       );
@@ -544,28 +566,32 @@
 
     function Footer(){
       return (
-        <footer className="mt-10 border-t">
-          <div className="mx-auto max-w-6xl p-4 text-xs text-slate-500">© {new Date().getFullYear()} Catálogo TEA — Demo estática</div>
+        <footer className="mt-12 border-t border-slate-200 bg-white">
+          <div className="mx-auto max-w-6xl p-5 text-center text-xs text-slate-400">
+            © {new Date().getFullYear()} Catálogo TEA — Protótipo de Engenharia de Usabilidade Inclusiva
+          </div>
         </footer>
       );
     }
 
     function Preferencias({prefs, setPrefs, onClose}){
       return (
-        <div role="dialog" aria-modal className="fixed inset-0 z-50 grid place-items-center bg-black/30 p-4">
-          <div className="w-full max-w-lg rounded-3xl bg-white p-5 shadow-lg">
-            <div className="flex items-center justify-between">
-              <h3 className="font-semibold">Preferências de Acessibilidade</h3>
-              <button onClick={onClose} className="text-sm underline">Fechar</button>
+        <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 grid place-items-center bg-slate-900/40 backdrop-blur-xs p-4">
+          <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-xl border border-slate-100 animate-in fade-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 className="font-bold text-slate-950">Acessibilidade e Layout</h3>
+              <button onClick={onClose} className="text-xs font-semibold text-slate-500 hover:text-slate-900">Fechar</button>
             </div>
-            <div className="mt-3 grid gap-3">
-              <ToggleRow label="Modo de foco (reduz distrações)" checked={prefs.modoFoco} onChange={(v)=>setPrefs({...prefs, modoFoco:v})} />
-              <ToggleRow label="Leitura simples (textos resumidos)" checked={prefs.leituraSimples} onChange={(v)=>setPrefs({...prefs, leituraSimples:v})} />
-              <ToggleRow label="Alto contraste" checked={prefs.altoContraste} onChange={(v)=>setPrefs({...prefs, altoContraste:v})} />
-              <ToggleRow label="Reduzir animações" checked={prefs.reduzirAnimacoes} onChange={(v)=>setPrefs({...prefs, reduzirAnimacoes:v})} />
+            <div className="mt-4 space-y-2.5">
+              <ToggleRow label="Modo de Foco (Restringe largura/distrações)" checked={prefs.modoFoco} onChange={(v)=>setPrefs({...prefs, modoFoco:v})} />
+              <ToggleRow label="Leitura Simples (Resumos diretos)" checked={prefs.leituraSimples} onChange={(v)=>setPrefs({...prefs, leituraSimples:v})} />
+              <ToggleRow label="Alto Contraste (Fundo branco absoluto)" checked={prefs.altoContraste} onChange={(v)=>setPrefs({...prefs, altoContraste:v})} />
+              <ToggleRow label="Inibir Animações de Scroll" checked={prefs.reduzirAnimacoes} onChange={(v)=>setPrefs({...prefs, reduzirAnimacoes:v})} />
             </div>
-            <div className="mt-4 flex justify-end">
-              <button className="btn" onClick={onClose}>Aplicar</button>
+            <div className="mt-5 flex justify-end">
+              <button className="rounded-xl px-5 py-2 bg-slate-900 text-white text-sm font-medium hover:bg-slate-800 shadow-sm" onClick={onClose}>
+                Aplicar Ajustes
+              </button>
             </div>
           </div>
         </div>
@@ -574,9 +600,9 @@
 
     function ToggleRow({label, checked, onChange}){
       return (
-        <label className="flex items-center justify-between gap-3 rounded-2xl border p-3 cursor-pointer">
-          <span className="text-sm">{label}</span>
-          <input type="checkbox" className="w-5 h-5" checked={checked} onChange={e=>onChange(e.target.checked)} />
+        <label className="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50/50 p-3.5 cursor-pointer select-none hover:bg-slate-50 transition-colors">
+          <span className="text-sm font-medium text-slate-700">{label}</span>
+          <input type="checkbox" className="w-5 h-5 accent-slate-900 rounded" checked={checked} onChange={e=>onChange(e.target.checked)} />
         </label>
       );
     }
