@@ -1,0 +1,164 @@
+[
+  {
+    "id": "proloquo",
+    "nome": "Proloquo (exemplo)",
+    "descricao": "App de comunicação alternativa com vocabulário baseado em pictogramas.",
+    "descricaoSimples": "Ajuda a pessoa a se comunicar usando pictogramas.",
+    "categorias": [
+      "Comunicação Alternativa (CAA)"
+    ],
+    "idades": [
+      "Crianças",
+      "Adolescentes",
+      "Adultos"
+    ],
+    "acessibilidade": [
+      "Pictogramas",
+      "Personalização de cores/sons",
+      "Compatível com leitura de tela"
+    ],
+    "plataformas": [
+      "iOS"
+    ],
+    "preco": "Pago",
+    "finalidade": "Apoiar comunicação expressiva por pictogramas.",
+    "exemplosUso": [
+      "Rotinas diárias: comer, beber e banheiro.",
+      "Comunicar preferências em sala de aula.",
+      "Criar quadros de escolha guiada."
+    ],
+    "privacidade": "Verificar política oficial do aplicativo antes do uso.",
+    "rating": 4.6,
+    "votos": 214
+  },
+  {
+    "id": "alfabetiza",
+    "nome": "Alfabetiza Fácil",
+    "descricao": "Jogos estruturados para consciência fonológica e alfabetização com baixo estímulo sensorial.",
+    "descricaoSimples": "Ajuda na alfabetização com atividades curtas e organizadas.",
+    "categorias": [
+      "Educação"
+    ],
+    "idades": [
+      "Crianças"
+    ],
+    "acessibilidade": [
+      "Baixo estímulo sensorial",
+      "Personalização de cores/sons"
+    ],
+    "plataformas": [
+      "Android",
+      "Web"
+    ],
+    "preco": "Freemium",
+    "finalidade": "Apoiar alfabetização inicial com rotinas previsíveis.",
+    "exemplosUso": [
+      "Sessões curtas de 5 a 7 minutos.",
+      "Atividades sem tempo limite.",
+      "Reforço positivo após cada etapa."
+    ],
+    "privacidade": "Dados fictícios para fins de prototipação.",
+    "rating": 4.2,
+    "votos": 128
+  },
+  {
+    "id": "calma",
+    "nome": "Calma+",
+    "descricao": "Técnicas de respiração guiada e regulação emocional com feedback visual mínimo.",
+    "descricaoSimples": "Ajuda a pessoa a se acalmar com respiração guiada.",
+    "categorias": [
+      "Regulação Emocional",
+      "Terapia e Saúde"
+    ],
+    "idades": [
+      "Adolescentes",
+      "Adultos",
+      "Pais/Terapeutas"
+    ],
+    "acessibilidade": [
+      "Baixo estímulo sensorial",
+      "Personalização de cores/sons"
+    ],
+    "plataformas": [
+      "Android",
+      "iOS"
+    ],
+    "preco": "Gratuito",
+    "finalidade": "Auxiliar em autorregulação com rotinas guiadas.",
+    "exemplosUso": [
+      "Usar antes da aula para reduzir ansiedade.",
+      "Usar em intervalos ou momentos de sobrecarga.",
+      "Apoiar rotina de sono."
+    ],
+    "privacidade": "Verificar coleta de dados sensíveis em contexto terapêutico.",
+    "rating": 4.8,
+    "votos": 501
+  },
+  {
+    "id": "socialmix",
+    "nome": "SocialMix",
+    "descricao": "Treino de habilidades sociais com histórias sociais e simulações de situações do cotidiano.",
+    "descricaoSimples": "Ajuda a praticar situações sociais do dia a dia.",
+    "categorias": [
+      "Habilidades Sociais",
+      "Educação"
+    ],
+    "idades": [
+      "Adolescentes",
+      "Adultos"
+    ],
+    "acessibilidade": [
+      "Pictogramas",
+      "Compatível com leitura de tela"
+    ],
+    "plataformas": [
+      "Web",
+      "Android"
+    ],
+    "preco": "Freemium",
+    "finalidade": "Ensinar scripts sociais em contextos do dia a dia.",
+    "exemplosUso": [
+      "Como pedir ajuda.",
+      "Como iniciar uma conversa.",
+      "Como lidar com frustrações."
+    ],
+    "privacidade": "Dados fictícios para fins de prototipação.",
+    "rating": 3.9,
+    "votos": 77
+  },
+  {
+    "id": "rotina-visual",
+    "nome": "Rotina Visual",
+    "descricao": "Organizador de rotina com imagens, etapas sequenciais e lembretes configuráveis.",
+    "descricaoSimples": "Mostra a rotina em passos com imagens.",
+    "categorias": [
+      "Educação",
+      "Terapia e Saúde"
+    ],
+    "idades": [
+      "Crianças",
+      "Adolescentes",
+      "Pais/Terapeutas"
+    ],
+    "acessibilidade": [
+      "Pictogramas",
+      "Baixo estímulo sensorial",
+      "Personalização de cores/sons"
+    ],
+    "plataformas": [
+      "Android",
+      "iOS",
+      "Web"
+    ],
+    "preco": "Freemium",
+    "finalidade": "Apoiar previsibilidade e organização da rotina.",
+    "exemplosUso": [
+      "Montar sequência da manhã.",
+      "Preparar transições entre atividades.",
+      "Acompanhar tarefas escolares."
+    ],
+    "privacidade": "Verificar se imagens pessoais são armazenadas localmente ou em nuvem.",
+    "rating": 4.4,
+    "votos": 189
+  }
+]

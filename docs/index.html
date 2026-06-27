@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Protótipo de catálogo digital de aplicativos para pessoas autistas." />
+  <title>Catálogo TEA — Protótipo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo principal</a>
+
+  <header class="app-header">
+    <div class="container header-inner">
+      <button class="brand" data-route="home" aria-label="Ir para a página inicial">
+        <span class="brand-icon" aria-hidden="true">◆</span>
+        <span>Catálogo TEA</span>
+      </button>
+
+      <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mainNav">Menu</button>
+
+      <nav id="mainNav" class="main-nav" aria-label="Navegação principal">
+        <button data-route="home" class="nav-link active">Home</button>
+        <button data-route="buscar" class="nav-link">Buscar Apps</button>
+        <button data-route="lista" class="nav-link">Lista</button>
+        <button data-route="recomendacoes" class="nav-link">Recomendações</button>
+        <button data-route="guia" class="nav-link">Guia</button>
+        <button data-route="comunidade" class="nav-link">Comunidade</button>
+        <button data-route="sobre" class="nav-link">Sobre</button>
+      </nav>
+
+      <button id="openPrefs" class="button button-secondary">Preferências</button>
+    </div>
+  </header>
+
+  <div id="focusBanner" class="focus-banner hidden">
+    Modo foco ativo: a interface está exibindo menos distrações.
+  </div>
+
+  <main id="conteudo" class="container app-main" tabindex="-1">
+    <section id="viewHome" class="view active" aria-labelledby="homeTitle">
+      <div class="hero">
+        <div class="hero-content">
+          <p class="eyebrow">Protótipo de arquitetura de informação e UX inclusiva</p>
+          <h1 id="homeTitle">Catálogo de Aplicativos para Pessoas Autistas</h1>
+          <p class="hero-text">
+            Encontre, compare e avalie aplicativos de educação, comunicação alternativa, habilidades sociais,
+            regulação emocional e apoio terapêutico, com foco em usabilidade inclusiva.
+          </p>
+          <div class="hero-actions">
+            <button class="button button-primary" data-route="buscar">Começar agora</button>
+            <button class="button button-secondary" data-route="recomendacoes">Ver recomendações</button>
+          </div>
+          <ul class="feature-list">
+            <li>Filtros por categoria, faixa etária e acessibilidade.</li>
+            <li>Checklist de usabilidade inclusiva em cada app.</li>
+            <li>Modo foco, leitura simples e alto contraste.</li>
+          </ul>
+        </div>
+        <aside class="hero-panel" aria-label="Aplicativos em destaque">
+          <h2>Destaques</h2>
+          <div id="homeHighlights" class="highlight-grid"></div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="viewBuscar" class="view" aria-labelledby="buscarTitle">
+      <div class="section-header">
+        <h1 id="buscarTitle">Buscar Aplicativos</h1>
+        <p>Use a busca textual ou selecione filtros para encontrar aplicativos adequados ao contexto de uso.</p>
+      </div>
+      <form id="searchForm" class="search-panel">
+        <label for="searchInput">Nome do aplicativo ou palavra-chave</label>
+        <div class="search-row">
+          <input id="searchInput" type="search" placeholder="Ex.: comunicação, alfabetização, pictogramas" />
+          <button class="button button-primary" type="submit">Buscar</button>
+        </div>
+      </form>
+      <div class="filters-grid">
+        <fieldset class="filter-card"><legend>Categoria</legend><div id="categoryFilters" class="checkbox-list"></div></fieldset>
+        <fieldset class="filter-card"><legend>Idade/Público</legend><div id="ageFilters" class="checkbox-list"></div></fieldset>
+        <fieldset class="filter-card"><legend>Acessibilidade</legend><div id="accessFilters" class="checkbox-list"></div><p class="hint">Dica: “baixo estímulo sensorial” ajuda a reduzir sobrecarga visual e sonora.</p></fieldset>
+      </div>
+      <div class="right-actions">
+        <button class="button button-secondary" id="clearFilters">Limpar filtros</button>
+        <button class="button button-primary" data-route="lista">Ver resultados</button>
+      </div>
+    </section>
+
+    <section id="viewLista" class="view" aria-labelledby="listaTitle">
+      <div class="section-header row-between">
+        <div><h1 id="listaTitle">Lista de Aplicativos</h1><p id="resultCount">Carregando aplicativos...</p></div>
+        <button class="button button-secondary" data-route="buscar">Ajustar filtros</button>
+      </div>
+      <div id="appsGrid" class="apps-grid"></div>
+    </section>
+
+    <section id="viewDetalhe" class="view" aria-labelledby="detailTitle">
+      <button class="text-button" data-route="lista">← Voltar para a lista</button>
+      <article id="detailContent" class="detail-layout"></article>
+    </section>
+
+    <section id="viewRecomendacoes" class="view" aria-labelledby="recTitle">
+      <div class="section-header">
+        <h1 id="recTitle">Avaliações e Recomendações</h1>
+        <p>Apps ordenados por avaliação, com destaque para acessibilidade e finalidade de uso.</p>
+      </div>
+      <div id="recommendationsGrid" class="apps-grid"></div>
+    </section>
+
+    <section id="viewGuia" class="view" aria-labelledby="guideTitle">
+      <div class="section-header"><h1 id="guideTitle">Guia de Uso</h1><p>Orientações rápidas para ajudar usuários, familiares e profissionais a navegar no catálogo.</p></div>
+      <div class="two-columns">
+        <article class="card">
+          <h2>Como navegar</h2>
+          <ol class="steps">
+            <li>Use a busca quando já souber o nome do aplicativo.</li>
+            <li>Use os filtros quando quiser descobrir novas opções.</li>
+            <li>Abra a página do app e confira finalidade, público e acessibilidade.</li>
+            <li>Leia exemplos de uso e avaliações.</li>
+            <li>Depois de experimentar, contribua com sua avaliação.</li>
+          </ol>
+        </article>
+        <article class="card">
+          <h2>Glossário</h2>
+          <dl class="glossary">
+            <dt>CAA</dt><dd>Comunicação Alternativa e Ampliada por símbolos, imagens ou pictogramas.</dd>
+            <dt>Baixo estímulo sensorial</dt><dd>Interface com menos sons, animações e elementos visuais simultâneos.</dd>
+            <dt>Leitura simples</dt><dd>Texto direto, curto e sem metáforas desnecessárias.</dd>
+          </dl>
+        </article>
+      </div>
+    </section>
+
+    <section id="viewComunidade" class="view" aria-labelledby="communityTitle">
+      <div class="section-header"><h1 id="communityTitle">Comunidade</h1><p>Espaço para experiências, dúvidas rápidas e sugestão de novos aplicativos.</p></div>
+      <div class="two-columns">
+        <article class="card">
+          <h2>Experiências de usuários</h2>
+          <div class="comment"><strong>Prof. Ana</strong><p>Usei o Calma+ antes das aulas e percebi melhor adaptação à transição de atividades.</p></div>
+          <div class="comment"><strong>Thiago, pai</strong><p>O Rotina Visual ajudou a organizar a manhã com menos conflitos.</p></div>
+        </article>
+        <article class="card">
+          <h2>Sugira um app</h2>
+          <form id="suggestForm" class="stack-form">
+            <label for="suggestName">Nome do aplicativo</label>
+            <input id="suggestName" type="text" placeholder="Ex.: nome do app" />
+            <label for="suggestReason">Por que ele deve entrar no catálogo?</label>
+            <textarea id="suggestReason" rows="4" placeholder="Descreva brevemente a finalidade e o público."></textarea>
+            <button type="submit" class="button button-primary">Enviar sugestão</button>
+          </form>
+          <p id="suggestFeedback" class="success-message hidden">Sugestão registrada no protótipo.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="viewSobre" class="view" aria-labelledby="aboutTitle">
+      <div class="section-header"><h1 id="aboutTitle">Sobre o Projeto</h1><p>Este protótipo representa um catálogo digital para apoiar a seleção e adoção de aplicativos voltados a pessoas autistas.</p></div>
+      <div class="card"><h2>Missão</h2><p>Facilitar a descoberta de tecnologias digitais com informações organizadas sobre finalidade, público, acessibilidade, plataformas, exemplos de uso e avaliações de usuários.</p></div>
+      <div class="card"><h2>Observação importante</h2><p>Os aplicativos apresentados neste protótipo são exemplos para validação de fluxo, conteúdo e interface. Em uma versão real, as informações precisam ser verificadas em fontes oficiais e por avaliação empírica.</p></div>
+    </section>
+  </main>
+
+  <div id="prefsModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="prefsTitle">
+    <section class="modal">
+      <div class="modal-header"><h2 id="prefsTitle">Preferências de Acessibilidade</h2><button id="closePrefs" class="icon-button" aria-label="Fechar preferências">×</button></div>
+      <label class="toggle-row"><span><strong>Modo foco</strong><small>Reduz distrações e centraliza o conteúdo.</small></span><input type="checkbox" id="prefFocus" /></label>
+      <label class="toggle-row"><span><strong>Leitura simples</strong><small>Exibe descrições mais curtas e diretas.</small></span><input type="checkbox" id="prefSimple" /></label>
+      <label class="toggle-row"><span><strong>Alto contraste</strong><small>Aumenta contraste entre texto, fundo e bordas.</small></span><input type="checkbox" id="prefContrast" /></label>
+      <label class="toggle-row"><span><strong>Reduzir animações</strong><small>Evita transições visuais desnecessárias.</small></span><input type="checkbox" id="prefMotion" checked /></label>
+      <div class="right-actions"><button id="applyPrefs" class="button button-primary">Aplicar</button></div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
