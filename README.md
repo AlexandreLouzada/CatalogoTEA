@@ -2,8 +2,6 @@
 
 Esta versão usa exclusivamente HTML, CSS e JavaScript puro.
 
-Página do projeto: https://alexandrelouzada.github.io/CatalogoTEA/
-
 ## Principal diferença
 
 Os dados dos aplicativos estão incorporados diretamente no arquivo:
