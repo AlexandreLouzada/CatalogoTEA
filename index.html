@@ -3,157 +3,154 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Catálogo TEA — Demo Estática</title>
+  <title>Catálogo TEA — Painel Acadêmico</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-50 text-slate-800">
-  <div id="root"></div>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
 
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <header class="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
+    <div class="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
+      <div class="font-bold text-xl text-slate-900 flex items-center gap-2">
+        <span>🛡️</span> Catálogo TEA
+      </div>
+      <nav class="flex items-center gap-4 text-sm font-medium">
+        <span class="text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-full font-mono">Versão Estática Inclusiva</span>
+      </nav>
+    </div>
+  </header>
 
-  <script type="text/babel">
-    const { useState, useMemo } = React;
+  <main class="mx-auto w-full max-w-6xl p-4 md:p-6 flex-grow">
+    
+    <div class="bg-white border border-slate-200 rounded-2xl p-6 mb-6 shadow-sm">
+      <h1 class="text-2xl font-bold text-slate-900 mb-2">Protótipo de Plataforma de Recursos Tecnológicos</h1>
+      <p class="text-slate-600 text-sm leading-relaxed max-w-3xl">
+        Este ambiente estático simula os critérios de Engenharia de Usabilidade e Acessibilidade Aplicada. 
+        Desenvolvido para validação de interface e mapeamento de soluções de tecnologia assistiva voltadas ao Transtorno do Espectro Autista.
+      </p>
+    </div>
 
-    const CATEGORIAS = ["Educação", "Comunicação Alternativa (CAA)", "Habilidades Sociais", "Regulação Emocional", "Terapia e Saúde"];
-    const IDADES = ["Crianças", "Adolescentes", "Adultos", "Pais/Terapeutas"];
-    const ACESS = ["Baixo estímulo sensorial", "Pictogramas", "Personalização de cores/sons", "Compatível com leitura de tela"];
+    <div class="bg-white border border-slate-200 rounded-2xl p-5 mb-6 shadow-sm space-y-4">
+      <div>
+        <label for="search-input" class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Filtro de Busca Dinâmica</label>
+        <input 
+          id="search-input"
+          type="text" 
+          class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-950/10 transition-all"
+          placeholder="Digite termos como 'comunicação', 'alfabetiza', 'pictogramas' ou o nome do app..."
+          oninput="filtrarCatalogo()"
+        />
+      </div>
+    </div>
 
+    <div id="grid-apps" class="grid gap-4 sm:grid-cols-2">
+      </div>
+
+    <div id="no-results" class="hidden text-center py-12 text-slate-400 text-sm">
+      Nenhum aplicativo corresponde aos critérios digitados.
+    </div>
+
+  </main>
+
+  <footer class="border-t border-slate-200 bg-white p-4 text-center text-xs text-slate-400">
+    © 2026 Catálogo TEA — Engenharia de Software Inclusiva
+  </footer>
+
+  <script>
+    // Base de dados mockada estável
     const MOCK_APPS = [
       {
         id: "proloquo",
-        nome: "Proloquo (exemplo)",
-        descricao: "App de comunicação alternativa com vocabulário baseado em pictogramas.",
-        categorias: ["Comunicação Alternativa (CAA)"],
+        nome: "Proloquo2Go",
+        descricao: "Solução robusta de Comunicação Alternativa e Ampliada (CAA). Utiliza vocabulário baseado em pictogramas organizados por relevância linguística.",
+        categorias: ["CAA", "Comunicação"],
         idades: ["Crianças", "Adolescentes", "Adultos"],
-        acessibilidade: ["Pictogramas", "Personalização de cores/sons", "Compatível com leitura de tela"],
-        plataformas: ["iOS"],
-        preco: "Pago",
-        finalidade: "Apoiar comunicação expressiva por pictogramas.",
-        exemplosUso: ["Rotinas diárias (comer, beber, banheiro)", "Comunicar preferências em sala", "Quadros de escolha guiada"],
-        rating: 4.6,
-        votos: 214
+        acessibilidade: ["Pictogramas", "Alto Contraste", "Alto-falante integrado"],
+        plataforma: "iOS",
+        reforço: "Garante autonomia comunicativa em rotinas escolares e clínicas."
       },
       {
         id: "alfabetiza",
-        nome: "Alfabetiza Fácil",
-        descricao: "Jogos estruturados para consciência fonológica e alfabetização com baixo estímulo sensorial.",
-        categorias: ["Educação"],
+        nome: "Alfabetiza Fácil TEA",
+        descricao: "Gamificação estruturada para o desenvolvimento da consciência fonológica. Conta com interface limpa e rotinas altamente previsíveis.",
+        categorias: ["Educação", "Cognição"],
         idades: ["Crianças"],
-        acessibilidade: ["Baixo estímulo sensorial", "Personalização de cores/sons"],
-        plataformas: ["Android", "Web"],
-        preco: "Freemium",
-        finalidade: "Apoiar alfabetização inicial com rotinas previsíveis.",
-        exemplosUso: ["Sessões curtas (5-7 min) com reforço positivo", "Atividades sem tempo limite"],
-        rating: 4.2,
-        votos: 128
+        acessibilidade: ["Baixo estímulo sensorial", "Sem limite de tempo"],
+        plataforma: "Android / Web",
+        reforço: "Utiliza design focado em atenção dividida e reforço positivo visual."
+      },
+      {
+        id: "abc-autismo",
+        nome: "ABC Autismo",
+        descricao: "Baseado na metodologia TEACCH, oferece atividades de pareamento e ordenação para o aprendizado de conceitos básicos.",
+        categorias: ["Educação", "Coordenação"],
+        idades: ["Crianças"],
+        acessibilidade: ["Pistas Visuais Claras", "Sem estímulos sonoros abruptos"],
+        plataforma: "Android / iOS",
+        reforço: "Ideal para introdução de atividades estruturadas em ambiente domiciliar."
       }
     ];
 
-    function classNames(...arr) { return arr.filter(Boolean).join(" "); }
+    // Função para renderizar os cards na tela
+    function renderizarCards(lista) {
+      const grid = document.getElementById('grid-apps');
+      const noResults = document.getElementById('no-results');
+      
+      grid.innerHTML = '';
+      
+      if (lista.length === 0) {
+        noResults.classList.remove('hidden');
+        return;
+      }
+      
+      noResults.classList.add('hidden');
 
-    function Stars({ value, size = 18 }) {
-      const stars = [0, 1, 2, 3, 4].map(i => value >= i + 1 ? "full" : value > i ? "half" : "empty");
-      return (
-        <div className="flex items-center gap-1" aria-label={"Avaliação: " + value.toFixed(1) + " de 5"}>
-          <div className="flex gap-0.5" aria-hidden="true">
-            {stars.map((s, i) => (
-              <span key={i} className={s === "empty" ? "opacity-30" : ""} style={{ fontSize: size }}>
-                {s === "half" ? "⭐︎" : "⭐"}
-              </span>
-            ))}
-          </div>
-          <span className="ml-1 text-sm font-medium">{value.toFixed(1)}</span>
-        </div>
-      );
-    }
-
-    const Pill = ({ children }) => (
-      <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium border border-slate-200 bg-white text-slate-600">
-        {children}
-      </span>
-    );
-
-    function App() {
-      const [route, setRoute] = useState("home");
-      const [prefs, setPrefs] = useState({ modoFoco: false, leituraSimples: false, altoContraste: false, reduzirAnimacoes: true });
-      const [query, setQuery] = useState("");
-      const [selCats, setSelCats] = useState([]);
-      const [selIdades, setSelIdades] = useState([]);
-      const [selAcess, setSelAcess] = useState([]);
-      const [fav, setFav] = useState([]);
-      const [currentId, setCurrentId] = useState(null);
-      const [showPrefs, setShowPrefs] = useState(false);
-
-      const filtered = useMemo(() => {
-        return MOCK_APPS.filter(a =>
-          (query ? (a.nome.toLowerCase().includes(query.toLowerCase()) || a.descricao.toLowerCase().includes(query.toLowerCase())) : true)
-          && (selCats.length ? selCats.some(c => a.categorias.includes(c)) : true)
-          && (selIdades.length ? selIdades.some(i => a.idades.includes(i)) : true)
-          && (selAcess.length ? selAcess.every(ac => a.acessibilidade.includes(ac)) : true)
-        );
-      }, [query, selCats, selIdades, selAcess]);
-
-      const current = useMemo(() => MOCK_APPS.find(a => a.id === currentId) || null, [currentId]);
-
-      return (
-        <div className={classNames("min-h-screen flex flex-col", prefs.altoContraste ? "bg-white text-black" : "bg-slate-50 text-slate-800")}>
-          <header className="sticky top-0 z-40 bg-white border-b border-slate-200">
-            <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
-              <div className="font-bold text-slate-900 cursor-pointer" onClick={() => setRoute('home')}>🛡️ Catálogo TEA</div>
-              <nav className="flex items-center gap-4 text-sm font-medium">
-                <button onClick={() => setRoute('home')} className={route === 'home' ? "text-slate-900" : "text-slate-500"}>Home</button>
-                <button onClick={() => setRoute('buscar')} className={route === 'buscar' ? "text-slate-900" : "text-slate-500"}>Buscar</button>
-              </nav>
+      lista.forEach(app => {
+        const card = document.createElement('div');
+        card.className = "bg-white border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between space-y-4";
+        
+        card.innerHTML = `
+          <div class="space-y-2">
+            <div class="flex items-start justify-between">
+              <h3 class="font-bold text-lg text-slate-900">${app.nome}</h3>
+              <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">${app.plataforma}</span>
             </div>
-          </header>
-
-          <main className="mx-auto w-full max-w-6xl p-4 md:p-6 flex-grow">
-            {route === "home" && (
-              <div className="py-12 text-center space-y-4">
-                <h1 className="text-3xl font-bold text-slate-900">Catálogo de Aplicativos TEA</h1>
-                <p className="text-slate-600 max-w-xl mx-auto">Protótipo funcional focado em critérios de acessibilidade e Engenharia de Usabilidade Inclusiva.</p>
-                <button onClick={() => setRoute('buscar')} className="rounded-xl px-6 py-3 bg-slate-900 text-white font-medium hover:bg-slate-800">
-                  Acessar Painel de Busca
-                </button>
-              </div>
-            )}
-
-            {route === "buscar" && (
-              <div className="space-y-6">
-                <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                  <h2 className="font-bold text-lg text-slate-900 mb-3">Pesquisar</h2>
-                  <input className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-slate-950/10"
-                    placeholder="Ex: comunicação, pictogramas..." value={query} onChange={e => setQuery(e.target.value)} />
-                </div>
-                
-                <div className="grid sm:grid-cols-2 gap-4">
-                  {filtered.map(a => (
-                    <div key={a.id} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm space-y-3">
-                      <h3 className="font-bold text-base text-slate-900">{a.nome}</h3>
-                      <Stars value={a.rating} size={14} />
-                      <p className="text-sm text-slate-600">{a.descricao}</p>
-                      <div className="flex flex-wrap gap-1">
-                        {a.categorias.map(c => <Pill key={c}>{c}</Pill>)}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </main>
-
-          <footer className="border-t border-slate-200 bg-white p-4 text-center text-xs text-slate-400">
-            © {new Date().getFullYear()} Catálogo TEA — Versão Estática Limpa
-          </footer>
-        </div>
-      );
+            <p class="text-sm text-slate-600 leading-relaxed">${app.descricao}</p>
+            <div class="pt-2">
+              <span class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Cenário de Aplicação:</span>
+              <p class="text-xs text-slate-700 italic bg-slate-50 p-2 rounded-lg border border-slate-100">${app.reforço}</p>
+            </div>
+          </div>
+          
+          <div class="space-y-2 pt-2 border-t border-slate-100">
+            <div class="flex flex-wrap gap-1">
+              ${app.categorias.map(c => `<span class="inline-flex items-center rounded-full bg-blue-50 border border-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">${c}</span>`).join('')}
+              ${app.acessibilidade.map(a => `<span class="inline-flex items-center rounded-full bg-emerald-50 border border-emerald-100 px-2.5 py-0.5 text-xs font-medium text-emerald-700">👁️ ${a}</span>`).join('')}
+            </div>
+          </div>
+        `;
+        
+        grid.appendChild(card);
+      });
     }
 
-    const container = document.getElementById('root');
-    const root = ReactDOM.createRoot(container);
-    root.render(<App />);
+    // Função de filtro em tempo real
+    function filtrarCatalogo() {
+      const termo = document.getElementById('search-input').value.toLowerCase();
+      
+      const filtrados = MOCK_APPS.filter(app => {
+        return app.nome.toLowerCase().includes(termo) || 
+               app.descricao.toLowerCase().includes(termo) ||
+               app.categorias.some(c => c.toLowerCase().includes(termo)) ||
+               app.acessibilidade.some(a => a.toLowerCase().includes(termo));
+      });
+      
+      renderizarCards(filtrados);
+    }
+
+    // Inicialização automática ao carregar a página
+    document.addEventListener("DOMContentLoaded", () => {
+      renderizarCards(MOCK_APPS);
+    });
   </script>
 </body>
 </html>
