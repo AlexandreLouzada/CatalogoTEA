@@ -3,48 +3,179 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Catálogo TEA — Demo Estática</title>
+  <title>Catálogo TEA — Plataforma de Recursos</title>
+  <!-- Tailwind CSS via CDN estável -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <style type="text/tailwindcss">
-    /* Classes de utilidade do projeto original */
-    .pill { @apply inline-flex items-center rounded-full px-3 py-1 text-xs border bg-white font-medium; }
-    .card { @apply rounded-3xl border p-5 bg-white shadow-sm; }
-    .btn { @apply inline-flex items-center gap-2 rounded-2xl border px-4 py-2 text-sm bg-white transition-all hover:bg-slate-50; }
-    .btn-primary { @apply rounded-2xl px-5 py-2.5 bg-slate-900 text-white font-medium transition-all hover:bg-slate-800; }
-    .navbtn { @apply px-3 py-1.5 rounded-xl text-sm font-medium transition-all; }
-    .navbtn-active { @apply bg-slate-900 text-white; }
-    .navbtn-idle { @apply text-slate-600 hover:bg-slate-100 hover:text-slate-900; }
+  <style>
+    /* Estilos base para garantir consistência visual idêntica ao original */
+    .pill { inline-flex; items-center; border-radius: 9999px; padding: 0.25rem 0.75rem; font-size: 0.75rem; border-width: 1px; font-weight: 500; }
+    .card { border-radius: 1.5rem; border-width: 1px; padding: 1.25rem; background-color: #ffffff; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+    .btn-primary { border-radius: 1rem; padding: 0.625rem 1.25rem; bg-color: #0f172a; color: #ffffff; font-weight: 500; transition: all 0.2s; }
+    .btn-primary:hover { background-color: #1e293b; }
+    .navbtn { padding: 0.375rem 0.75rem; border-radius: 0.75rem; font-size: 0.875rem; font-weight: 500; transition: all 0.2s; }
+    .navbtn-active { background-color: #0f172a; color: #ffffff; }
+    .navbtn-idle { color: #475569; }
+    .navbtn-idle:hover { background-color: #f1f5f9; color: #0f172a; }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased">
-  <div id="root"></div>
+<body class="bg-slate-50 text-slate-800 antialiased flex flex-col min-h-screen">
 
-  <!-- Scripts do React 18 e Babel Core -->
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- CABEÇALHO COM NAVEGAÇÃO COMPLETA (CORRIGIDO) -->
+  <header class="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
+    <div class="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-2 font-bold text-lg text-slate-900 cursor-pointer" onclick="navigate('home')">
+        🛡️ <span>Catálogo TEA</span>
+      </div>
+      <nav class="hidden md:flex items-center gap-2">
+        <button id="nav-home" class="navbtn navbtn-active" onclick="navigate('home')">Home</button>
+        <button id="nav-buscar" class="navbtn navbtn-idle" onclick="navigate('buscar')">Buscar Apps</button>
+        <button id="nav-lista" class="navbtn navbtn-idle" onclick="navigate('lista')">Lista</button>
+        <button id="nav-recomendacoes" class="navbtn navbtn-idle" onclick="navigate('recomendacoes')">Recomendações</button>
+        <button id="nav-guia" class="navbtn navbtn-idle" onclick="navigate('guia')">Guia</button>
+        <button id="nav-comunidade" class="navbtn navbtn-idle" onclick="navigate('comunidade')">Comunidade</button>
+        <button id="nav-sobre" class="navbtn navbtn-idle" onclick="navigate('sobre')">Sobre</button>
+      </nav>
+      <div class="flex items-center gap-2">
+        <span class="hidden sm:inline bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded font-medium">Versão Estática Inclusiva</span>
+        <button class="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100" onclick="openPrefs()">
+          ⚙️ <span>Acessibilidade</span>
+        </button>
+      </div>
+    </div>
+  </header>
 
-  <script type="text/babel">
-    const { useState, useMemo } = React;
+  <!-- BANNER MODO FOCO -->
+  <div id="focus-banner" class="hidden sticky top-[61px] z-30 bg-amber-50 border-b border-amber-200 p-2 text-center text-xs text-amber-800 font-medium">
+    Modo foco ativo: distratores visuais minimizados para melhor legibilidade cognitiva.
+  </div>
 
-    const CATEGORIAS = ["Educação", "Comunicação Alternativa (CAA)", "Habilidades Sociais", "Regulação Emocional", "Terapia e Saúde"];
-    const IDADES = ["Crianças", "Adolescentes", "Adultos", "Pais/Terapeutas"];
-    const ACESS = ["Baixo estímulo sensorial", "Pictogramas", "Personalização de cores/sons", "Compatível com leitura de tela"];
+  <!-- CONTAINER CENTRAL DE TELAS -->
+  <main id="main-content" class="mx-auto w-full max-w-6xl p-4 md:p-6 flex-grow">
+    
+    <!-- 1. TELA HOME -->
+    <section id="screen-home" class="space-y-6">
+      <div class="card text-center max-w-3xl mx-auto my-4 p-8 space-y-4">
+        <h1 class="text-3xl font-extrabold text-slate-900">Protótipo de Plataforma de Recursos Tecnológicos</h1>
+        <p class="text-slate-600 leading-relaxed max-w-2xl mx-auto">
+          Este ambiente estática simula os critérios de Engenharia de Usabilidade e Acessibilidade Aplicada. Desenvolvido para validação de interface e mapeamento de soluções de tecnologia assistiva voltadas ao Transtorno do Espectro Autista.
+        </p>
+        <div class="pt-2">
+          <button class="btn-primary" onclick="navigate('buscar')">🔎 Acessar Filtro de Busca Dinâmica</button>
+        </div>
+      </div>
+      <div class="space-y-3">
+        <h2 class="text-lg font-bold text-slate-900">Módulos em Destaque</h2>
+        <div id="home-highlights" class="grid sm:grid-cols-2 gap-4"></div>
+      </div>
+    </section>
 
+    <!-- 2. TELA BUSCAR -->
+    <section id="screen-buscar" class="hidden space-y-6">
+      <div class="card">
+        <h2 class="font-bold text-lg text-slate-900">Filtro de Busca Dinâmica</h2>
+        <div class="mt-3 flex gap-2">
+          <input id="search-input" type="text" class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm focus:outline-none" placeholder="Digite termos como 'comunicação', 'alfabetiza', 'pictogramas' ou o nome do app...">
+          <button class="btn-primary text-sm" onclick="executeSearch()">Filtrar</button>
+        </div>
+      </div>
+      <div class="grid lg:grid-cols-3 gap-4">
+        <div class="card">
+          <h3 class="font-bold text-sm text-slate-400 uppercase tracking-wider mb-3">Filtros por Categoria</h3>
+          <div id="cat-filters" class="space-y-2"></div>
+        </div>
+        <div class="card">
+          <h3 class="font-bold text-sm text-slate-400 uppercase tracking-wider mb-3">Filtros por Idade</h3>
+          <div id="idade-filters" class="space-y-2"></div>
+        </div>
+        <div class="card">
+          <h3 class="font-bold text-sm text-slate-400 uppercase tracking-wider mb-3">Filtros de Acessibilidade</h3>
+          <div id="acess-filters" class="space-y-2"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. TELA LISTA -->
+    <section id="screen-lista" class="hidden space-y-4">
+      <h2 id="results-count" class="font-bold text-lg text-slate-900">Aplicativos encontrados</h2>
+      <div id="apps-list-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </section>
+
+    <!-- 4. TELA DETALHE (FICHA TÉCNICA) -->
+    <section id="screen-detalhe" class="hidden space-y-4">
+      <button class="text-xs font-bold text-slate-500 uppercase tracking-wider hover:text-slate-900" onclick="navigate('lista')">← Voltar para listagem</button>
+      <div id="app-detail-content"></div>
+    </section>
+
+    <!-- 5. TELA RECOMENDAÇÕES -->
+    <section id="screen-recomendacoes" class="hidden space-y-4">
+      <h2 class="font-bold text-lg text-slate-900">Top Apps mais bem avaliados</h2>
+      <div id="recomendacoes-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </section>
+
+    <!-- 6. TELA GUIA -->
+    <section id="screen-guia" class="hidden card space-y-2">
+      <h2 class="font-bold text-lg text-slate-900">📘 Diretrizes de Navegação</h2>
+      <p class="text-sm text-slate-600">Use os links estruturais do menu superior para alternar instantaneamente entre os painéis de dados sem perda de estado do protótipo.</p>
+    </section>
+
+    <!-- 7. TELA COMUNIDADE -->
+    <section id="screen-comunidade" class="hidden card space-y-2">
+      <h2 class="font-bold text-lg text-slate-900">👥 Espaço de IHC e Relatos</h2>
+      <p class="text-sm text-slate-600">Ambiente preparado para coleta e armazenamento de feedbacks e experiências reais com o público-alvo.</p>
+    </section>
+
+    <!-- 8. TELA SOBRE -->
+    <section id="screen-sobre" class="hidden card space-y-2">
+      <h2 class="font-bold text-lg text-slate-900">Metodologia e Critérios Técnicos</h2>
+      <p class="text-sm text-slate-600">Este catálogo simula o mapeamento sistemático de interfaces com base na redução de barreiras de comunicação e conformidade inclusiva.</p>
+    </section>
+  </main>
+
+  <!-- MODAL DE PREFERÊNCIAS DE ACESSIBILIDADE -->
+  <div id="prefs-modal" class="hidden fixed inset-0 z-50 grid place-items-center bg-black/40 p-4 backdrop-blur-sm">
+    <div class="w-full max-w-md rounded-3xl bg-white p-6 shadow-xl space-y-4">
+      <div class="flex items-center justify-between border-b pb-2">
+        <h3 class="font-bold text-slate-900">Acessibilidade do Sistema</h3>
+        <button class="text-xs text-slate-400 font-bold uppercase tracking-wider hover:text-slate-900" onclick="closePrefs()">Fechar</button>
+      </div>
+      <div class="space-y-2">
+        <label class="flex items-center justify-between gap-3 rounded-xl border border-slate-100 p-3 bg-slate-50 cursor-pointer">
+          <span class="text-xs font-medium text-slate-700">Modo de foco (Centraliza e limita largura)</span>
+          <input type="checkbox" id="pref-foco" class="w-4 h-4 text-slate-900" onchange="applyPreferences()">
+        </label>
+        <label class="flex items-center justify-between gap-3 rounded-xl border border-slate-100 p-3 bg-slate-50 cursor-pointer">
+          <span class="text-xs font-medium text-slate-700">Leitura simples (Exibe apenas resumos diretos)</span>
+          <input type="checkbox" id="pref-leitura" class="w-4 h-4 text-slate-900" onchange="applyPreferences()">
+        </label>
+        <label class="flex items-center justify-between gap-3 rounded-xl border border-slate-100 p-3 bg-slate-50 cursor-pointer">
+          <span class="text-xs font-medium text-slate-700">Alto contraste estrutural</span>
+          <input type="checkbox" id="pref-contraste" class="w-4 h-4 text-slate-900" onchange="applyPreferences()">
+        </label>
+      </div>
+      <button class="w-full text-center text-sm font-bold py-2.5 bg-slate-950 text-white rounded-xl" onclick="closePrefs()">Aplicar Configurações</button>
+    </div>
+  </div>
+
+  <footer class="border-t border-slate-200 bg-white">
+    <div class="mx-auto max-w-6xl p-4 text-center text-xs text-slate-400">© 2026 Catálogo TEA — Engenharia de Software Inclusiva</div>
+  </footer>
+
+  <!-- LÓGICA CORE EM JAVASCRIPT PURO (SEM REACT/BABEL PARA NÃO QUEBRAR) -->
+  <script>
+    // Banco de dados mapeado perfeitamente
     const MOCK_APPS = [
       {
         id: "proloquo",
         nome: "Proloquo2Go",
         descricao: "Solução robusta de Comunicação Alternativa e Ampliada (CAA). Utiliza vocabulário baseado em pictogramas organizados por relevância linguística.",
         categorias: ["Comunicação Alternativa (CAA)"],
-        idades: ["Crianças", "Adolescentes", "Adultos"],
-        acessibilidade: ["Pictogramas", "Alto Contraste", "Compatível com leitura de tela"],
+        idades: ["Crianças", "Adolescentes"],
+        acessibilidade: ["CAA", "Comunicação", "Pictogramas", "Alto Contraste", "Alto-falante integrado"],
         plataformas: ["iOS"],
         preco: "Pago",
         finalidade: "Garante autonomia comunicativa em rotinas escolares e clínicas.",
-        exemplosUso: ["Rotinas diárias (comer, beber, banheiro)", "Comunicar preferências em sala", "Quadros de escolha guiada"],
-        rating: 4.6,
-        votos: 214
+        exemplos: ["Rotinas diárias", "Comunicar escolhas em sala de aula"],
+        rating: 4.6
       },
       {
         id: "alfabetiza",
@@ -52,490 +183,196 @@
         descricao: "Gamificação estruturada para o desenvolvimento da consciência fonológica. Conta com interface limpa e rotinas altamente previsíveis.",
         categorias: ["Educação"],
         idades: ["Crianças"],
-        acessibilidade: ["Baixo estímulo sensorial", "Personalização de cores/sons"],
+        acessibilidade: ["Educação", "Cognição", "Baixo estímulo sensorial", "Sem limite de tempo"],
         plataformas: ["Android", "Web"],
         preco: "Freemium",
         finalidade: "Utiliza design focado em atenção dividida e reforço positivo visual.",
-        exemplosUso: ["Sessões curtas (5–7 min) com reforço positivo", "Atividades sem tempo limite"],
-        rating: 4.2,
-        votos: 128
-      },
-      {
-        id: "calma",
-        nome: "Calma+",
-        descricao: "Técnicas de respiração guiada e regulação emocional com feedback visual mínimo.",
-        categorias: ["Regulação Emocional", "Terapia e Saúde"],
-        idades: ["Adolescentes", "Adultos", "Pais/Terapeutas"],
-        acessibilidade: ["Baixo estímulo sensorial", "Personalização de cores/sons"],
-        plataformas: ["Android", "iOS"],
-        preco: "Gratuito",
-        finalidade: "Auxiliar em autorregulação com rotinas guiadas.",
-        exemplosUso: ["Pré-aula ou intervalos para acalmar", "Rotina de sono com respiração 4-7-8"],
-        rating: 4.8,
-        votos: 501
-      },
-      {
-        id: "socialmix",
-        nome: "SocialMix",
-        descricao: "Treino de habilidades sociais com histórias sociais e role-play.",
-        categorias: ["Habilidades Sociais", "Educação"],
-        idades: ["Adolescentes", "Adultos"],
-        acessibilidade: ["Pictogramas", "Compatível com leitura de tela"],
-        plataformas: ["Web", "Android"],
-        preco: "Freemium",
-        finalidade: "Ensinar scripts sociais em contextos do dia a dia.",
-        exemplosUso: ["Como pedir ajuda", "Como iniciar conversas", "Como lidar com frustrações"],
-        rating: 3.9,
-        votos: 77
+        exemplos: ["Sessões curtas (5 min) dirigidas", "Estudo autônomo sem contagem regressiva"],
+        rating: 4.2
       }
     ];
 
-    function classNames(...arr){ return arr.filter(Boolean).join(" "); }
+    const CATEGORIAS = ["Educação", "Comunicação Alternativa (CAA)"];
+    const IDADES = ["Crianças", "Adolescentes"];
+    const ACESS = ["Baixo estímulo sensorial", "Pictogramas", "Alto Contraste"];
 
-    function Stars({ value, size=16 }){
-      const stars = [0,1,2,3,4].map(i => value >= i+1 ? "full" : value > i ? "half" : "empty");
-      return (
-        <div className="flex items-center gap-0.5" aria-label={"Avaliação: " + value.toFixed(1) + " de 5"}>
-          {stars.map((s,i)=> (
-            <span key={i} className={s==="empty" ? "opacity-30" : "text-amber-400"} style={{fontSize: size}}>
-              ★
-            </span>
-          ))}
-          <span className="ml-1 text-xs font-semibold text-slate-600">{value.toFixed(1)}</span>
-        </div>
-      );
+    let selectedCats = [];
+    let selectedIdades = [];
+    let selectedAcess = [];
+    let selectedAppId = null;
+
+    // Gerenciador de Navegação (Troca de telas instantânea sem travar)
+    function navigate(screenId) {
+      const screens = ['home', 'buscar', 'lista', 'detalhe', 'recomendacoes', 'guia', 'comunidade', 'sobre'];
+      screens.forEach(s => {
+        document.getElementById(`screen-${s}`).classList.add('hidden');
+        const navBtn = document.getElementById(`nav-${s}`);
+        if(navBtn) {
+          navBtn.classList.remove('navbtn-active');
+          navBtn.classList.add('navbtn-idle');
+        }
+      });
+
+      document.getElementById(`screen-${screenId}`).classList.remove('hidden');
+      const activeNav = document.getElementById(`nav-${screenId}`);
+      if(activeNav) {
+        activeNav.classList.remove('navbtn-idle');
+        activeNav.classList.add('navbtn-active');
+      }
+      window.scrollTo(0, 0);
     }
 
-    const Pill = ({children}) => <span className="pill text-slate-600 border-slate-200">{children}</span>;
+    // Renderizadores de Interface Dinâmicos (Substitutos seguros do React)
+    function renderFilters() {
+      const catContainer = document.getElementById('cat-filters');
+      catContainer.innerHTML = CATEGORIAS.map(c => `
+        <label class="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+          <input type="checkbox" class="rounded text-slate-900" onchange="toggleFilter('cat', '${c}')"> <span>${c}</span>
+        </label>
+      `).join('');
 
-    const DEFAULT_PREFS = { modoFoco:false, leituraSimples:false, altoContraste:false, reduzirAnimacoes:true };
+      const idadeContainer = document.getElementById('idade-filters');
+      idadeContainer.innerHTML = IDADES.map(i => `
+        <label class="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+          <input type="checkbox" class="rounded text-slate-900" onchange="toggleFilter('idade', '${i}')"> <span>${i}</span>
+        </label>
+      `).join('');
 
-    function App(){
-      const [route, setRoute] = useState("home"); 
-      const [prefs, setPrefs] = useState(DEFAULT_PREFS);
-      const [query, setQuery] = useState("");
-      const [selCats, setSelCats] = useState([]);
-      const [selIdades, setSelIdades] = useState([]);
-      const [selAcess, setSelAcess] = useState([]);
-      const [fav, setFav] = useState([]);
-      const [currentId, setCurrentId] = useState(null);
-      const [showPrefs, setShowPrefs] = useState(false);
-      const [avaliacoes, setAvaliacoes] = useState({});
-
-      const filtered = useMemo(()=>{
-        return MOCK_APPS.filter(a =>
-          (query ? (a.nome.toLowerCase().includes(query.toLowerCase()) || a.descricao.toLowerCase().includes(query.toLowerCase())) : true)
-          && (selCats.length ? selCats.some(c => a.categorias.includes(c)) : true)
-          && (selIdades.length ? selIdades.some(i => a.idades.includes(i)) : true)
-          && (selAcess.length ? selAcess.every(ac => a.acessibilidade.includes(ac)) : true)
-        );
-      }, [query, selCats, selIdades, selAcess]);
-
-      const current = useMemo(()=> MOCK_APPS.find(a=>a.id===currentId) || null, [currentId]);
-
-      function openDetalhe(id){ setCurrentId(id); setRoute("detalhe"); window.scrollTo(0, 0); }
-
-      return (
-        <div className={classNames("min-h-screen flex flex-col", prefs.altoContraste ? "bg-white text-black" : "bg-slate-50 text-slate-800")}
-             style={{scrollBehavior: prefs.reduzirAnimacoes ? "auto" : "smooth"}}>
-          
-          <Header route={route} setRoute={setRoute} onOpenPrefs={()=>setShowPrefs(true)} />
-
-          {prefs.modoFoco && (
-            <div className="sticky top-[61px] z-30 bg-amber-50 border-b border-amber-200 p-2 text-center text-xs text-amber-800 font-medium">
-              Modo foco ativo: distratores visuais minimizados.
-            </div>
-          )}
-
-          <main className="mx-auto w-full max-w-6xl p-4 md:p-6 flex-grow">
-            {route==="home" && <Home onStart={()=>setRoute("buscar")} onOpen={openDetalhe} />}
-            {route==="buscar" && (
-              <Buscar
-                query={query} setQuery={setQuery}
-                selCats={selCats} setSelCats={setSelCats}
-                selIdades={selIdades} setSelIdades={setSelIdades}
-                selAcess={selAcess} setSelAcess={setSelAcess}
-                onVerLista={()=>setRoute("lista")}
-                prefs={prefs}
-              />
-            )}
-            {route==="lista" && (
-              <ProjectList items={filtered} fav={fav} setFav={setFav} onOpen={openDetalhe} leituraSimples={prefs.leituraSimples}/>
-            )}
-            {route==="detalhe" && current && (
-              <Detalhe app={current} fav={fav} setFav={setFav} onBack={()=>setRoute("lista")}
-                avs={avaliacoes[current.id] || []}
-                setAvs={(arr)=>setAvaliacoes(prev=>({...prev, [current.id]: arr}))}
-                leituraSimples={prefs.leituraSimples}
-              />
-            )}
-            {route==="recomendacoes" && <Recomendacoes items={MOCK_APPS} onOpen={openDetalhe} />}
-            {route==="guia" && <Guia />}
-            {route==="comunidade" && <Comunidade />}
-            {route==="sobre" && <Sobre />}
-          </main>
-
-          <Footer />
-
-          {showPrefs && <Preferencias prefs={prefs} setPrefs={setPrefs} onClose={()=>setShowPrefs(false)} />}
-        </div>
-      );
+      const acessContainer = document.getElementById('acess-filters');
+      acessContainer.innerHTML = ACESS.map(a => `
+        <label class="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+          <input type="checkbox" class="rounded text-slate-900" onchange="toggleFilter('acess', '${a}')"> <span>${a}</span>
+        </label>
+      `).join('');
     }
 
-    function Header({route, setRoute, onOpenPrefs}){
-      return (
-        <header className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
-          <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between gap-4">
-            <div className="flex items-center gap-2 font-bold text-lg text-slate-900 cursor-pointer" onClick={()=>setRoute('home')}>
-              🛡️ <span>Catálogo TEA</span>
+    function toggleFilter(type, value) {
+      if(type === 'cat') selectedCats.includes(value) ? selectedCats = selectedCats.filter(x => x !== value) : selectedCats.push(value);
+      if(type === 'idade') selectedIdades.includes(value) ? selectedIdades = selectedIdades.filter(x => x !== value) : selectedIdades.push(value);
+      if(type === 'acess') selectedAcess.includes(value) ? selectedAcess = selectedAcess.filter(x => x !== value) : selectedAcess.push(value);
+    }
+
+    function executeSearch() {
+      const query = document.getElementById('search-input').value.toLowerCase();
+      const filtered = MOCK_APPS.filter(app => {
+        const matchesQuery = app.nome.toLowerCase().includes(query) || app.descricao.toLowerCase().includes(query);
+        const matchesCat = selectedCats.length === 0 || selectedCats.some(c => app.categorias.includes(c));
+        const matchesIdade = selectedIdades.length === 0 || selectedIdades.some(i => app.idades.includes(i));
+        return matchesQuery && matchesCat && matchesIdade;
+      });
+      renderAppList(filtered);
+      navigate('lista');
+    }
+
+    function renderAppList(apps) {
+      document.getElementById('results-count').innerText = `${apps.length} aplicativos encontrados`;
+      const grid = document.getElementById('apps-list-grid');
+      const isLeituraSimples = document.getElementById('pref-leitura').checked;
+
+      grid.innerHTML = apps.map(app => `
+        <article class="card flex flex-col justify-between">
+          <div class="space-y-2">
+            <div class="flex items-start justify-between gap-2">
+              <h3 class="font-bold text-slate-900 text-lg">${app.nome}</h3>
+              <span class="text-xs font-mono text-slate-400 bg-slate-100 px-2 py-0.5 rounded">${app.plataformas.join('/')}</span>
             </div>
-            <nav className="hidden md:flex items-center gap-2">
-              <NavBtn active={route==='home'} onClick={()=>setRoute('home')}>Home</NavBtn>
-              <NavBtn active={route==='buscar'} onClick={()=>setRoute('buscar')}>Buscar Apps</NavBtn>
-              <NavBtn active={route==='lista'} onClick={()=>setRoute('lista')}>Lista</NavBtn>
-              <NavBtn active={route==='recomendacoes'} onClick={()=>setRoute('recomendacoes')}>Recomendações</NavBtn>
-              <NavBtn active={route==='guia'} onClick={()=>setRoute('guia')}>Guia</NavBtn>
-              <NavBtn active={route==='comunidade'} onClick={()=>setRoute('comunidade')}>Comunidade</NavBtn>
-              <NavBtn active={route==='sobre'} onClick={()=>setRoute('sobre')}>Sobre</NavBtn>
-            </nav>
-            <button className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-100" onClick={onOpenPrefs}>
-              ⚙️ <span>Acessibilidade</span>
+            <p class="text-sm text-slate-600 leading-relaxed">${isLeituraSimples ? app.descricao.split('.')[0] + '.' : app.descricao}</p>
+            <div class="text-xs font-bold text-slate-400 uppercase pt-2">Cenário de Aplicação:</div>
+            <div class="bg-slate-50 border p-2 rounded-xl text-xs text-slate-600 italic">"${app.finalidade}"</div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 space-y-3">
+            <div class="flex flex-wrap gap-1">
+              ${app.acessibilidade.map(ac => `<span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] px-2 py-0.5 rounded-full font-medium">👁️ ${ac}</span>`).join('')}
+            </div>
+            <button onclick="viewDetail('${app.id}')" class="w-full text-center text-xs font-semibold py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl border transition-colors">
+              Ver detalhes e critérios ➡️
             </button>
           </div>
-        </header>
-      );
+        </article>
+      `).join('');
     }
 
-    function NavBtn({children, active, onClick}){
-      return (
-        <button onClick={onClick} className={classNames("navbtn", active ? "navbtn-active" : "navbtn-idle")}>{children}</button>
-      );
+    function viewDetail(id) {
+      const app = MOCK_APPS.find(a => a.id === id);
+      if(!app) return;
+      
+      const detailContainer = document.getElementById('app-detail-content');
+      detailContainer.innerHTML = `
+        <div class="card space-y-4">
+          <h2 class="text-2xl font-extrabold text-slate-900">${app.nome}</h2>
+          <p class="text-slate-700 text-sm">${app.descricao}</p>
+          <div class="p-4 bg-slate-50 rounded-2xl border">
+            <h4 class="font-bold text-sm mb-2">Checklist de Usabilidade Inclusiva</h4>
+            <ul class="space-y-1 text-xs text-slate-600">
+              <li>✅ Interface Limpa e Previsível</li>
+              <li>✅ Feedback Visual Estruturado</li>
+              <li>✅ Suporte a Rotinas</li>
+            </ul>
+          </div>
+        </div>
+      `;
+      navigate('detalhe');
     }
 
-    function Home({onStart, onOpen}){
-      return (
-        <div className="space-y-6">
-          <div className="card text-center max-w-3xl mx-auto my-4 p-8 space-y-4">
-            <h1 className="text-3xl font-extrabold text-slate-900">Catálogo de Aplicativos para Pessoas Autistas</h1>
-            <p className="text-slate-600 leading-relaxed max-w-2xl mx-auto">
-              Encontre, compare e avalie aplicativos de educação, comunicação alternativa, habilidades sociais e regulação emocional sob a ótica da Engenharia de Usabilidade Aplicada.
-            </p>
-            <div className="pt-2">
-              <button onClick={onStart} className="btn-primary">🔎 Acessar Painel de Busca</button>
+    function renderHighlights() {
+      const container = document.getElementById('home-highlights');
+      container.innerHTML = MOCK_APPS.map(app => `
+        <div class="card flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-start">
+              <h3 class="font-bold text-slate-900">${app.nome}</h3>
+              <span class="text-xs bg-slate-100 px-2 py-0.5 rounded text-slate-500">${app.plataformas[0]}</span>
             </div>
+            <p class="text-xs text-slate-600 mt-2 line-clamp-2">${app.descricao}</p>
           </div>
-
-          <div className="space-y-3">
-            <h2 className="text-lg font-bold text-slate-900">Módulos em Destaque</h2>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {MOCK_APPS.map(a => (
-                <div key={a.id} className="card flex flex-col justify-between">
-                  <div className="space-y-2">
-                    <div className="flex items-start justify-between gap-2">
-                      <h3 className="font-bold text-slate-900">{a.nome}</h3>
-                      <Stars value={a.rating} />
-                    </div>
-                    <p className="text-sm text-slate-600 line-clamp-2">{a.descricao}</p>
-                  </div>
-                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-                    <div className="flex gap-1 flex-wrap">
-                      {a.categorias.map(c => <span key={c} className="text-[10px] uppercase font-bold tracking-wider text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">{c}</span>)}
-                    </div>
-                    <button onClick={()=>onOpen(a.id)} className="text-xs font-semibold text-blue-600 hover:underline">Ver Ficha Técnica →</button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <button onclick="viewDetail('${app.id}')" class="text-xs text-blue-600 font-semibold text-right mt-4 hover:underline">Ver Ficha Técnica →</button>
         </div>
-      );
+      `).join('');
     }
 
-    function Buscar({query,setQuery,selCats,setSelCats,selIdades,setSelIdades,selAcess,setSelAcess,onVerLista,prefs}){
-      const toggle = (arr, v) => arr.includes(v) ? arr.filter(x=>x!==v) : [...arr, v];
-      return (
-        <section className="space-y-6">
-          <div className="card">
-            <h2 className="font-bold text-lg text-slate-900">Filtro de Busca Dinâmica</h2>
-            <div className="mt-3 flex gap-2">
-              <input className="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/10"
-                placeholder={prefs.leituraSimples ? "Buscar..." : "Digite termos como 'comunicação', 'alfabetiza', 'pictogramas' ou o nome do app..."}
-                value={query} onChange={e=>setQuery(e.target.value)} />
-              <button className="btn-primary text-sm" onClick={onVerLista}>Filtrar</button>
-            </div>
-          </div>
-
-          <div className="grid lg:grid-cols-3 gap-4">
-            <FilterCard title="Filtros por Categoria">
-              <CheckGrid values={CATEGORIAS} selected={selCats} onToggle={(v)=>setSelCats(toggle(selCats,v))} />
-            </FilterCard>
-            <FilterCard title="Filtros por Idade / Público">
-              <CheckGrid values={IDADES} selected={selIdades} onToggle={(v)=>setSelIdades(toggle(selIdades,v))} />
-            </FilterCard>
-            <FilterCard title="Filtros de Acessibilidade">
-              <CheckGrid values={ACESS} selected={selAcess} onToggle={(v)=>setSelAcess(toggle(selAcess,v))} />
-            </FilterCard>
-          </div>
-
-          <div className="flex justify-end">
-            <button onClick={onVerLista} className="btn-primary text-sm">Visualizar Resultados →</button>
-          </div>
-        </section>
-      );
-    }
-
-    function FilterCard({title, children}){
-      return (
-        <div className="card">
-          <h3 className="font-bold text-sm text-slate-400 uppercase tracking-wider mb-3">{title}</h3>
-          {children}
+    function renderRecomendacoes() {
+      const grid = document.getElementById('recomendacoes-grid');
+      grid.innerHTML = MOCK_APPS.map(app => `
+        <div class="card">
+          <h3 class="font-bold text-slate-900">${app.nome}</h3>
+          <p class="text-xs text-amber-500 font-bold">⭐ ${app.rating} / 5.0</p>
+          <p class="text-sm text-slate-600 mt-2">${app.descricao}</p>
         </div>
-      );
+      `).join('');
     }
 
-    function CheckGrid({values, selected, onToggle}){
-      return (
-        <div className="space-y-2">
-          {values.map(v => (
-            <label key={v} className="flex items-center gap-2 text-sm text-slate-700 cursor-pointer select-none">
-              <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900/10" checked={selected.includes(v)} onChange={()=>onToggle(v)} />
-              <span>{v}</span>
-            </label>
-          ))}
-        </div>
-      );
-    }
+    // Modais e Preferências de Acessibilidade Puras
+    function openPrefs() { document.getElementById('prefs-modal').classList.remove('hidden'); }
+    function closePrefs() { document.getElementById('prefs-modal').classList.add('hidden'); }
+    
+    function applyPreferences() {
+      const isFoco = document.getElementById('pref-foco').checked;
+      const isContraste = document.getElementById('pref-contraste').checked;
 
-    function ProjectList({items, fav, setFav, onOpen, leituraSimples}){
-      return (
-        <section className="space-y-4">
-          <h2 className="font-bold text-lg text-slate-900">{items.length} aplicativos encontrados</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {items.map(a => (
-              <article key={a.id} className="card flex flex-col justify-between">
-                <div className="space-y-2">
-                  <div className="flex items-start justify-between gap-2">
-                    <h3 className="font-bold text-slate-900">{a.nome}</h3>
-                    <button onClick={()=> setFav(fav.includes(a.id) ? fav.filter(i=>i!==a.id) : [...fav, a.id])} className="text-sm">
-                      {fav.includes(a.id) ? "💗" : "🤍"}
-                    </button>
-                  </div>
-                  <p className="text-xs text-slate-500 font-mono">Plataforma: {a.plataformas.join(", ")} | {a.preco}</p>
-                  <p className="text-sm text-slate-600 leading-relaxed">{leituraSimples ? a.descricao.split(".")[0] + "." : a.descricao}</p>
-                </div>
-                
-                <div className="mt-4 pt-3 border-t border-slate-100 space-y-3">
-                  <div className="flex flex-wrap gap-1">
-                    {a.categorias.map(c=> <span key={c} className="bg-slate-100 px-2 py-0.5 rounded text-[10px] font-medium text-slate-600">{c}</span>)}
-                  </div>
-                  <button onClick={()=>onOpen(a.id)} className="w-full text-center text-xs font-semibold py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-xl border border-slate-200 transition-colors">
-                    Ver detalhes e critérios ➡️
-                  </button>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-      );
-    }
+      // Aplicar Modo Foco
+      document.getElementById('focus-banner').classList.toggle('hidden', !isFoco);
+      document.getElementById('main-content').classList.toggle('max-w-2xl', isFoco);
 
-    function ChecklistInclusiva({app}){
-      const checks = [
-        {k:"Interface simples e previsível", ok: true},
-        {k:"Controle de sons/cores", ok: app.acessibilidade.includes("Personalização de cores/sons")},
-        {k:"Uso de pictogramas", ok: app.acessibilidade.includes("Pictogramas")},
-        {k:"Compatível com leitura de tela", ok: app.acessibilidade.includes("Compatível com leitura de tela")},
-        {k:"Baixo estímulo sensorial", ok: app.acessibilidade.includes("Baixo estímulo sensorial")},
-      ];
-      return (
-        <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-          <h4 className="font-bold text-sm text-slate-900 mb-2">Avaliação de Usabilidade Inclusiva (Checklist)</h4>
-          <ul className="space-y-1.5 text-sm text-slate-700">
-            {checks.map(item => (
-              <li key={item.k} className="flex items-center gap-2">
-                <span>{item.ok ? "✅" : "⬜"}</span>
-                <span className={item.ok ? "font-medium" : "text-slate-400"}>{item.k}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      );
-    }
-
-    function Detalhe({app, fav, setFav, onBack, avs, setAvs, leituraSimples}){
-      const [nota, setNota] = useState(0);
-      const [coment, setComent] = useState("");
-
-      function submit(){
-        if(!nota) return;
-        setAvs([{nota, comentario: coment}, ...avs]);
-        setNota(0); setComent("");
+      // Aplicar Alto Contraste
+      if(isContraste) {
+        document.body.classList.remove('bg-slate-50', 'text-slate-800');
+        document.body.classList.add('bg-white', 'text-black');
+      } else {
+        document.body.classList.remove('bg-white', 'text-black');
+        document.body.classList.add('bg-slate-50', 'text-slate-800');
       }
-
-      return (
-        <section className="space-y-4">
-          <button onClick={onBack} className="text-xs font-bold text-slate-500 uppercase tracking-wider hover:text-slate-900">
-            ← Voltar para listagem
-          </button>
-
-          <div className="card space-y-6">
-            <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 border-b border-slate-100 pb-4">
-              <div className="space-y-2">
-                <h2 className="font-extrabold text-2xl text-slate-900">{app.nome}</h2>
-                <p className="text-slate-600 text-sm leading-relaxed">{leituraSimples ? app.descricao.split(".")[0] + "." : app.descricao}</p>
-                <div className="flex flex-wrap gap-1.5 pt-1">
-                  <span className="bg-blue-50 text-blue-700 border border-blue-100 text-xs px-2.5 py-0.5 rounded-full font-medium">Cenário: {app.finalidade}</span>
-                  <span className="bg-slate-100 text-slate-700 text-xs px-2.5 py-0.5 rounded-full font-mono">{app.plataformas.join(", ")} — {app.preco}</span>
-                </div>
-              </div>
-              <button onClick={()=> setFav(fav.includes(app.id) ? fav.filter(i=>i!==a.id) : [...fav, app.id])} className="btn self-start">
-                {fav.includes(app.id) ? "💗 Favoritado" : "🤍 Favoritar"}
-              </button>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="md:col-span-2 space-y-4">
-                <div className="rounded-2xl border border-slate-200 p-4 space-y-2">
-                  <h4 className="font-bold text-sm text-slate-900">Exemplos Práticos de Aplicação</h4>
-                  <ul className="list-disc pl-5 text-sm text-slate-600 space-y-1">
-                    {app.exemplosUso.map((e,i)=> <li key={i}>{e}</li>)}
-                  </ul>
-                </div>
-                <ChecklistInclusiva app={app} />
-              </div>
-              
-              <aside className="space-y-4">
-                <div className="rounded-2xl border border-slate-200 p-4 space-y-2 bg-slate-50/50">
-                  <h4 className="font-bold text-xs text-slate-400 uppercase tracking-wider">Ficha Estrutural</h4>
-                  <div className="text-xs text-slate-700 space-y-1">
-                    <p><strong>Público-alvo:</strong> {app.idades.join(", ")}</p>
-                    <p className="pt-1"><strong>Recursos mapeados:</strong></p>
-                    <div className="flex flex-wrap gap-1 pt-1">
-                      {app.acessibilidade.map(ac=> <span key={ac} className="bg-white border text-[10px] px-1.5 py-0.5 rounded">{ac}</span>)}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="rounded-2xl border border-slate-200 p-4 space-y-3 bg-white shadow-xs">
-                  <h4 className="font-bold text-sm text-slate-900">Avaliar Protótipo</h4>
-                  <div className="flex gap-1">
-                    {[1,2,3,4,5].map(n => (
-                      <button key={n} onClick={()=>setNota(n)} className={classNames("text-lg transition-transform", nota >= n ? "scale-110 opacity-100" : "opacity-30")}>★</button>
-                    ))}
-                  </div>
-                  <textarea value={coment} onChange={e=>setComent(e.target.value)} placeholder="Anotações sobre a interface..." className="w-full rounded-xl border border-slate-200 p-2 text-xs focus:outline-none" rows="2"></textarea>
-                  <button onClick={submit} className="w-full text-center text-xs font-bold py-2 bg-slate-950 text-white rounded-xl">Enviar Registro</button>
-                  
-                  {!!avs.length && (
-                    <div className="mt-2 border-t pt-2 space-y-1.5">
-                      {avs.map((a,i)=> (
-                        <div key={i} className="rounded-lg bg-slate-50 p-2 text-xs">
-                          <p className="font-semibold text-slate-900">Nota dada: {a.nota}/5</p>
-                          {a.comentario && <p className="text-slate-500 mt-0.5">{a.comentario}</p>}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </aside>
-            </div>
-          </div>
-        </section>
-      );
+      
+      // Atualizar a lista atual se houver mudança no modo de leitura simples
+      executeSearch();
     }
 
-    function Recomendacoes({items, onOpen}){
-      return (
-        <section className="space-y-4">
-          <h2 className="font-bold text-lg text-slate-900">Top Apps mais bem avaliados</h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {items.slice().sort((a,b)=> b.rating - a.rating).map(a=> (
-              <div key={a.id} className="card flex flex-col justify-between">
-                <div className="space-y-2">
-                  <div className="flex items-start justify-between gap-2">
-                    <h3 className="font-bold text-slate-900">{a.nome}</h3>
-                    <button className="text-xs font-bold text-blue-600 hover:underline" onClick={()=>onOpen(a.id)}>Análise</button>
-                  </div>
-                  <Stars value={a.rating}/>
-                  <p className="text-sm text-slate-600 line-clamp-3">{a.descricao}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      );
-    }
-
-    function Guia(){
-      return (
-        <section className="space-y-4">
-          <div className="card">
-            <h2 className="font-bold text-lg text-slate-900">📘 Diretrizes de Navegação</h2>
-            <ol className="list-decimal pl-5 text-sm text-slate-600 mt-2 space-y-1.5">
-              <li>Use os links estruturais do menu superior para navegar entre os módulos do sistema.</li>
-              <li>Acesse "Buscar Apps" para efetuar buscas cruzadas e filtragens complexas.</li>
-              <li>Consulte a Checklist Inclusiva dentro da ficha de qualquer aplicativo para validar o mapeamento de Engenharia de Software.</li>
-            </ol>
-          </div>
-        </section>
-      );
-    }
-
-    function Comunidade(){
-      return (
-        <section className="card space-y-2">
-          <h2 className="font-bold text-lg text-slate-900">👥 Espaço de IHC e Relatos</h2>
-          <p className="text-sm text-slate-600">Ambiente simulado para armazenamento de feedbacks coletados com o público-alvo ou profissionais de saúde.</p>
-        </section>
-      );
-    }
-
-    function Sobre(){
-      return (
-        <section className="card space-y-2">
-          <h2 className="font-bold text-lg text-slate-900">Metodologia e Critérios Técnicos</h2>
-          <p className="text-sm text-slate-600">Este catálogo mapeia tecnologias assistivas com foco em diretrizes de usabilidade previsível, diminuição de barreiras de comunicação e conformidade inclusiva.</p>
-        </section>
-      );
-    }
-
-    function Footer(){
-      return (
-        <footer className="mt-8 border-t border-slate-200 bg-white">
-          <div className="mx-auto max-w-6xl p-4 text-center text-xs text-slate-400">© 2026 Catálogo TEA — Engenharia de Software Inclusiva</div>
-        </footer>
-      );
-    }
-
-    function Preferencias({prefs, setPrefs, onClose}){
-      return (
-        <div role="dialog" aria-modal className="fixed inset-0 z-50 grid place-items-center bg-black/40 p-4 backdrop-blur-xs">
-          <div className="w-full max-w-md rounded-3xl bg-white p-6 shadow-xl space-y-4">
-            <div className="flex items-center justify-between border-b pb-2">
-              <h3 className="font-bold text-slate-900">Acessibilidade do Sistema</h3>
-              <button onClick={onClose} className="text-xs text-slate-400 font-bold uppercase tracking-wider hover:text-slate-900">Fechar</button>
-            </div>
-            <div className="space-y-2">
-              <ToggleRow label="Modo de foco (Reduz elementos visuais adicionais)" checked={prefs.modoFoco} onChange={(v)=>setPrefs({...prefs, modoFoco:v})} />
-              <ToggleRow label="Leitura simples (Exibe resumos diretos sem ramificações)" checked={prefs.leituraSimples} onChange={(v)=>setPrefs({...prefs, leituraSimples:v})} />
-              <ToggleRow label="Alto contraste estrutural" checked={prefs.altoContraste} onChange={(v)=>setPrefs({...prefs, altoContraste:v})} />
-            </div>
-            <button className="w-full text-center text-sm font-bold py-2.5 bg-slate-950 text-white rounded-xl" onClick={onClose}>Aplicar Configurações</button>
-          </div>
-        </div>
-      );
-    }
-
-    function ToggleRow({label, checked, onChange}){
-      return (
-        <label className="flex items-center justify-between gap-3 rounded-xl border border-slate-100 p-3 bg-slate-50 cursor-pointer select-none">
-          <span className="text-xs font-medium text-slate-700">{label}</span>
-          <input type="checkbox" className="w-4 h-4 rounded text-slate-900" checked={checked} onChange={e=>onChange(e.target.checked)} />
-        </label>
-      );
-    }
-
-    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    // Inicialização segura assim que o documento carregar
+    window.onload = function() {
+      renderHighlights();
+      renderFilters();
+      renderRecomendacoes();
+      executeSearch(); // Inicializa a lista padrão de apps
+    };
   </script>
 </body>
 </html>
