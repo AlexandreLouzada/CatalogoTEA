@@ -10,53 +10,71 @@
 
   <header class="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
     <div class="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
-      <div class="font-bold text-xl text-slate-900 flex items-center gap-2">
+      <div class="font-bold text-xl text-slate-900 flex items-center gap-2 cursor-pointer" onclick="navegar('home')">
         <span>🛡️</span> Catálogo TEA
       </div>
-      <nav class="flex items-center gap-4 text-sm font-medium">
-        <span class="text-xs bg-slate-100 text-slate-600 px-2.5 py-1 rounded-full font-mono">Versão Estática Inclusiva</span>
+      <nav class="flex items-center gap-6 text-sm font-medium">
+        <button id="btn-nav-home" onclick="navegar('home')" class="text-blue-600 border-b-2 border-blue-600 pb-1 transition-all">Home</button>
+        <button id="btn-nav-buscar" onclick="navegar('buscar')" class="text-slate-500 hover:text-slate-900 pb-1 transition-all">Buscar Catálogo</button>
       </nav>
     </div>
   </header>
 
   <main class="mx-auto w-full max-w-6xl p-4 md:p-6 flex-grow">
     
-    <div class="bg-white border border-slate-200 rounded-2xl p-6 mb-6 shadow-sm">
-      <h1 class="text-2xl font-bold text-slate-900 mb-2">Protótipo de Plataforma de Recursos Tecnológicos</h1>
-      <p class="text-slate-600 text-sm leading-relaxed max-w-3xl">
-        Este ambiente estático simula os critérios de Engenharia de Usabilidade e Acessibilidade Aplicada. 
-        Desenvolvido para validação de interface e mapeamento de soluções de tecnologia assistiva voltadas ao Transtorno do Espectro Autista.
-      </p>
-    </div>
-
-    <div class="bg-white border border-slate-200 rounded-2xl p-5 mb-6 shadow-sm space-y-4">
-      <div>
-        <label for="search-input" class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Filtro de Busca Dinâmica</label>
-        <input 
-          id="search-input"
-          type="text" 
-          class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-950/10 transition-all"
-          placeholder="Digite termos como 'comunicação', 'alfabetiza', 'pictogramas' ou o nome do app..."
-          oninput="filtrarCatalogo()"
-        />
+    <div id="tela-home" class="space-y-6">
+      <div class="bg-white border border-slate-200 rounded-2xl p-8 text-center space-y-4 shadow-sm max-w-3xl mx-auto my-8">
+        <h1 class="text-3xl font-bold text-slate-900">Catálogo de Aplicativos TEA</h1>
+        <p class="text-slate-600 text-base leading-relaxed">
+          Protótipo funcional voltado à avaliação de critérios de Engenharia de Usabilidade e Acessibilidade Aplicada. 
+          Ambiente estático para mapeamento de soluções de tecnologia assistiva.
+        </p>
+        <div class="pt-4">
+          <button onclick="navegar('buscar')" class="inline-flex items-center justify-center rounded-xl px-6 py-3 bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors shadow-md">
+            Acessar Painel de Busca →
+          </button>
+        </div>
       </div>
     </div>
 
-    <div id="grid-apps" class="grid gap-4 sm:grid-cols-2">
+    <div id="tela-buscar" class="hidden space-y-6">
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+        <div>
+          <label for="search-input" class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Filtro de Busca Dinâmica</label>
+          <input 
+            id="search-input"
+            type="text" 
+            class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-950/10 transition-all"
+            placeholder="Digite termos como 'comunicação', 'alfabetiza', 'pictogramas' ou o nome do app..."
+            oninput="filtrarCatalogo()"
+          />
+        </div>
       </div>
 
-    <div id="no-results" class="hidden text-center py-12 text-slate-400 text-sm">
-      Nenhum aplicativo corresponde aos critérios digitados.
+      <div id="grid-apps" class="grid gap-4 sm:grid-cols-2">
+        </div>
+
+      <div id="no-results" class="hidden text-center py-12 text-slate-400 text-sm">
+        Nenhum aplicativo corresponde aos critérios digitados.
+      </div>
+    </div>
+
+    <div id="tela-detalhes" class="hidden space-y-6">
+      <button onclick="navegar('buscar')" class="text-sm font-medium text-blue-600 hover:underline flex items-center gap-1 mb-4">
+        ← Voltar para a busca
+      </button>
+      
+      <div id="conteudo-detalhes" class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-6">
+        </div>
     </div>
 
   </main>
 
-  <footer class="border-t border-slate-200 bg-white p-4 text-center text-xs text-slate-400">
+  <footer class="border-t border-slate-200 bg-white p-4 text-center text-xs text-slate-400 mt-8">
     © 2026 Catálogo TEA — Engenharia de Software Inclusiva
   </footer>
 
   <script>
-    // Base de dados mockada estável
     const MOCK_APPS = [
       {
         id: "proloquo",
@@ -66,7 +84,8 @@
         idades: ["Crianças", "Adolescentes", "Adultos"],
         acessibilidade: ["Pictogramas", "Alto Contraste", "Alto-falante integrado"],
         plataforma: "iOS",
-        reforço: "Garante autonomia comunicativa em rotinas escolares e clínicas."
+        reforço: "Garante autonomia comunicativa em rotinas escolares e clínicas.",
+        detalhesTecnicos: "Suporta rastreamento ocular e switches externos. Permite customização completa das grades de imagens para usuários com diferentes níveis de comprometimento motor ou cognitivo."
       },
       {
         id: "alfabetiza",
@@ -76,7 +95,8 @@
         idades: ["Crianças"],
         acessibilidade: ["Baixo estímulo sensorial", "Sem limite de tempo"],
         plataforma: "Android / Web",
-        reforço: "Utiliza design focado em atenção dividida e reforço positivo visual."
+        reforço: "Utiliza design focado em atenção dividida e reforço positivo visual.",
+        detalhesTecnicos: "Interface livre de banners publicitários ou pop-ups disruptivos. Desenvolvido sob diretrizes de design focado na previsibilidade para evitar sobrecarga cognitiva."
       },
       {
         id: "abc-autismo",
@@ -86,22 +106,48 @@
         idades: ["Crianças"],
         acessibilidade: ["Pistas Visuais Claras", "Sem estímulos sonoros abruptos"],
         plataforma: "Android / iOS",
-        reforço: "Ideal para introdução de atividades estruturadas em ambiente domiciliar."
+        reforço: "Ideal para introdução de atividades estruturadas em ambiente domiciliar.",
+        detalhesTecnicos: "Fracionamento de tarefas em etapas discretas. Sistema de recompensa previsível e ausência de penalidades por erro, reduzindo a frustração do usuário."
       }
     ];
 
-    // Função para renderizar os cards na tela
+    // GERENCIADOR DE NAVEGAÇÃO (Troca de telas mudando classes do Tailwind)
+    function navegar(destino) {
+      // Esconde todas as telas
+      document.getElementById('tela-home').classList.add('hidden');
+      document.getElementById('tela-buscar').classList.add('hidden');
+      document.getElementById('tela-detalhes').classList.add('hidden');
+
+      // Remove destaque dos botões do menu
+      document.getElementById('btn-nav-home').className = "text-slate-500 hover:text-slate-900 pb-1 transition-all";
+      document.getElementById('btn-nav-buscar').className = "text-slate-500 hover:text-slate-900 pb-1 transition-all";
+
+      // Mostra a tela selecionada e destaca o botão correto
+      if (destino === 'home') {
+        document.getElementById('tela-home').classList.remove('hidden');
+        document.getElementById('btn-nav-home').className = "text-blue-600 border-b-2 border-blue-600 pb-1 transition-all font-semibold";
+      } else if (destino === 'buscar') {
+        document.getElementById('tela-buscar').classList.remove('hidden');
+        document.getElementById('btn-nav-buscar').className = "text-blue-600 border-b-2 border-blue-600 pb-1 transition-all font-semibold";
+        renderizarCards(MOCK_APPS); // Garante que a lista carregue atualizada
+      } else if (destino === 'detalhes') {
+        document.getElementById('tela-detalhes').classList.remove('hidden');
+      }
+      
+      // Rola a página para o topo ao mudar de tela
+      window.scrollTo(0, 0);
+    }
+
+    // RENDERIZAR CARDS DA TELA DE BUSCA
     function renderizarCards(lista) {
       const grid = document.getElementById('grid-apps');
       const noResults = document.getElementById('no-results');
-      
       grid.innerHTML = '';
       
       if (lista.length === 0) {
         noResults.classList.remove('hidden');
         return;
       }
-      
       noResults.classList.add('hidden');
 
       lista.forEach(app => {
@@ -114,42 +160,80 @@
               <h3 class="font-bold text-lg text-slate-900">${app.nome}</h3>
               <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">${app.plataforma}</span>
             </div>
-            <p class="text-sm text-slate-600 leading-relaxed">${app.descricao}</p>
-            <div class="pt-2">
-              <span class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Cenário de Aplicação:</span>
-              <p class="text-xs text-slate-700 italic bg-slate-50 p-2 rounded-lg border border-slate-100">${app.reforço}</p>
-            </div>
+            <p class="text-sm text-slate-600 leading-relaxed line-clamp-3">${app.descricao}</p>
           </div>
           
-          <div class="space-y-2 pt-2 border-t border-slate-100">
+          <div class="space-y-3 pt-2 border-t border-slate-100">
             <div class="flex flex-wrap gap-1">
-              ${app.categorias.map(c => `<span class="inline-flex items-center rounded-full bg-blue-50 border border-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-700">${c}</span>`).join('')}
-              ${app.acessibilidade.map(a => `<span class="inline-flex items-center rounded-full bg-emerald-50 border border-emerald-100 px-2.5 py-0.5 text-xs font-medium text-emerald-700">👁️ ${a}</span>`).join('')}
+              ${app.categorias.map(c => `<span class="inline-flex items-center rounded-full bg-blue-50 border border-blue-100 px-2.5 py-0.5 text-[11px] font-medium text-blue-700">${c}</span>`).join('')}
             </div>
+            <button onclick="verDetalhes('${app.id}')" class="w-full text-center text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 py-2 rounded-xl transition-colors">
+              Ver Detalhes e Critérios de Acessibilidade
+            </button>
           </div>
         `;
-        
         grid.appendChild(card);
       });
     }
 
-    // Função de filtro em tempo real
+    // ABRIR TELA DE DETALHES ESPECÍFICOS DO APP
+    function verDetalhes(id) {
+      const app = MOCK_APPS.find(a => a.id === id);
+      if (!app) return;
+
+      const container = document.getElementById('conteudo-detalhes');
+      container.innerHTML = `
+        <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-100 pb-4 gap-2">
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900">${app.nome}</h2>
+            <p class="text-sm text-slate-500">Plataforma de operação: <span class="font-mono bg-slate-100 px-1.5 py-0.5 rounded">${app.plataforma}</span></p>
+          </div>
+          <span class="self-start md:self-auto text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full font-medium">Ficha Técnica Validada</span>
+        </div>
+
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Descrição Geral</h4>
+          <p class="text-sm text-slate-700 leading-relaxed">${app.descricao}</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
+          <div>
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Público-Alvo</h4>
+            <div class="flex flex-wrap gap-1">
+              ${app.idades.map(i => `<span class="bg-white border border-slate-200 text-slate-700 px-2.5 py-1 rounded-lg text-xs">${i}</span>`).join('')}
+            </div>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Recursos de Acessibilidade Mapeados</h4>
+            <div class="flex flex-wrap gap-1">
+              ${app.acessibilidade.map(a => `<span class="bg-emerald-100/60 border border-emerald-200 text-emerald-800 px-2.5 py-1 rounded-lg text-xs font-medium">👁️ ${a}</span>`).join('')}
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400">Análise de IHC e Engenharia de Usabilidade</h4>
+          <p class="text-sm text-slate-600 bg-amber-50/50 border border-amber-100 p-3 rounded-xl leading-relaxed">${app.detalhesTecnicos}</p>
+        </div>
+      `;
+
+      navegar('detalhes');
+    }
+
+    // DINÂMICA DE FILTRO
     function filtrarCatalogo() {
       const termo = document.getElementById('search-input').value.toLowerCase();
-      
       const filtrados = MOCK_APPS.filter(app => {
         return app.nome.toLowerCase().includes(termo) || 
                app.descricao.toLowerCase().includes(termo) ||
-               app.categorias.some(c => c.toLowerCase().includes(termo)) ||
-               app.acessibilidade.some(a => a.toLowerCase().includes(termo));
+               app.categorias.some(c => c.toLowerCase().includes(termo));
       });
-      
       renderizarCards(filtrados);
     }
 
-    // Inicialização automática ao carregar a página
+    // Inicializa carregando a Home
     document.addEventListener("DOMContentLoaded", () => {
-      renderizarCards(MOCK_APPS);
+      navegar('home');
     });
   </script>
 </body>
