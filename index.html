@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Catálogo TEA — Demo Estática</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
+  <!-- CORREÇÃO: Adicionado type="text/tailwindcss" para o Tailwind processar o @apply -->
+  <style type="text/tailwindcss">
     /* Pequenos ajustes visuais */
     .pill { @apply inline-flex items-center rounded-full px-3 py-1 text-xs border; }
     .card { @apply rounded-3xl border p-4; }
@@ -42,7 +43,7 @@
         plataformas: ["iOS"],
         preco: "Pago",
         finalidade: "Apoiar comunicação expressiva por pictogramas.",
-        exemplosUso: ["Rotinas diárias (comer, beber, banheiro)", "Comunicar preferências em sala", "Quadros de escolha guiada"],
+        exemplosUso: ["Rotinas diárias (comer, beber, banheiro)", "Comunicar preferences em sala", "Quadros de escolha guiada"],
         rating: 4.6,
         votos: 214
       },
@@ -146,7 +147,7 @@
           )}
 
           <main className={classNames("mx-auto max-w-6xl p-4 md:p-6", prefs.modoFoco && "max-w-3xl")} aria-live="polite">
-            {route==="home" && <Home onStart={()=>setRoute("buscar")} />}
+            {route==="home" && <Home onStart={()=>setRoute("buscar")} onOpen={openDetalhe} />}
             {route==="buscar" && (
               <Buscar
                 query={query} setQuery={setQuery}
@@ -184,7 +185,7 @@
       return (
         <header className="sticky top-0 z-40 backdrop-blur bg-white/80 border-b">
           <div className="mx-auto max-w-6xl px-4 py-3 flex items-center gap-3">
-            <div className="flex items-center gap-2 font-semibold">🛡️ <span>Catálogo TEA</span></div>
+            <div className="flex items-center gap-2 font-semibold cursor-pointer" onClick={()=>setRoute('home')}>🛡️ <span>Catálogo TEA</span></div>
             <nav className="ml-auto hidden md:flex items-center gap-4 text-sm">
               <NavBtn active={route==='home'} onClick={()=>setRoute('home')}>Home</NavBtn>
               <NavBtn active={route==='buscar'} onClick={()=>setRoute('buscar')}>Buscar Apps</NavBtn>
@@ -208,7 +209,7 @@
       );
     }
 
-    function Home({onStart}){
+    function Home({onStart, onOpen}){
       return (
         <section className="grid md:grid-cols-2 gap-6 items-center">
           <div>
@@ -216,7 +217,6 @@
             <p className="mt-3 text-slate-600">Encontre, compare e avalie aplicativos de educação, comunicação alternativa, habilidades sociais e regulação emocional, com foco em <strong>usabilidade inclusiva</strong>.</p>
             <div className="mt-5 flex gap-3">
               <button onClick={onStart} className="btn-primary">🔎 Começar agora</button>
-              <a className="btn" href="#" onClick={(e)=>{e.preventDefault(); onStart();}}>Ver apps populares</a>
             </div>
             <ul className="mt-6 grid gap-2 text-sm">
               <li className="inline-flex items-center gap-2">✅ Filtros por categoria, idade e acessibilidade</li>
@@ -234,9 +234,9 @@
                       <h3 className="font-semibold text-sm">{a.nome}</h3>
                       <Stars value={a.rating} />
                     </div>
-                    <button className="text-xs underline">Detalhes</button>
+                    <button onClick={()=>onOpen(a.id)} className="text-xs underline text-blue-600">Detalhes</button>
                   </div>
-                  <p className="mt-2 text-sm text-slate-600">{a.descricao}</p>
+                  <p className="mt-2 text-sm text-slate-600 line-clamp-2">{a.descricao}</p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {a.categorias.map(c => <Pill key={c}>{c}</Pill>)}
                   </div>
@@ -252,13 +252,13 @@
       const toggle = (arr, v) => arr.includes(v) ? arr.filter(x=>x!==v) : [...arr, v];
       return (
         <section className="space-y-6">
-          <div className="card">
+          <div className="card bg-white">
             <h2 className="font-bold text-lg">Buscar Aplicativos</h2>
             <label className="mt-3 block text-sm">Digite o nome do app ou palavra-chave</label>
             <div className="mt-1 flex gap-2">
               <input aria-label="Campo de busca" className="w-full rounded-2xl border px-3 py-2"
                 placeholder={prefs.leituraSimples ? "Buscar apps..." : "Ex.: comunicação, alfabetização, pictogramas"}
-                value={query} onChange={e=>setQuery(e.target.value)} />
+                value={query} onChange={e=>query !== undefined ? setQuery(e.target.value) : null} />
               <button className="btn-primary" onClick={onVerLista}>🔎 Buscar</button>
             </div>
           </div>
@@ -277,7 +277,7 @@
           </div>
 
           <div className="flex justify-end">
-            <button onClick={onVerLista} className="btn">➡️ Ver resultados</button>
+            <button onClick={onVerLista} className="btn bg-white">➡️ Ver resultados</button>
           </div>
         </section>
       );
@@ -285,7 +285,7 @@
 
     function FilterCard({title, children}){
       return (
-        <div className="rounded-3xl border p-4">
+        <div className="rounded-3xl border p-4 bg-white">
           <div className="flex items-center gap-2 mb-2"><span>🧰</span><h3 className="font-semibold">{title}</h3></div>
           {children}
         </div>
@@ -294,9 +294,9 @@
 
     function CheckGrid({values, selected, onToggle}){
       return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 gap-2">
           {values.map(v => (
-            <label key={v} className="flex items-center gap-2 text-sm cursor-pointer">
+            <label key={v} className="flex items-center gap-2 text-sm cursor-pointerNE">
               <input type="checkbox" className="w-4 h-4" checked={selected.includes(v)} onChange={()=>onToggle(v)} />
               <span>{v}</span>
             </label>
@@ -314,7 +314,7 @@
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {items.map(a => (
-              <article key={a.id} className="rounded-3xl border p-4 hover:shadow">
+              <article key={a.id} className="rounded-3xl border p-4 bg-white hover:shadow">
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <h3 className="font-semibold">{a.nome}</h3>
@@ -377,9 +377,9 @@
 
       return (
         <section className="space-y-4">
-          <button onClick={onBack} className="text-sm underline">⬅️ Voltar</button>
+          <button onClick={onBack} className="text-sm underline">⬅️ Voltar para a lista</button>
 
-          <div className="rounded-3xl border p-4">
+          <div className="rounded-3xl border p-4 bg-white">
             <div className="flex items-start justify-between gap-3">
               <div>
                 <h2 className="font-bold text-xl">{app.nome}</h2>
@@ -411,7 +411,7 @@
                   <h4 className="font-semibold mb-2">Informações</h4>
                   <div className="space-y-2 text-sm">
                     <div><strong>Público-alvo:</strong> {app.idades.join(", ")}</div>
-                    <div className="flex flex-wrap gap-2"><strong>Recursos:</strong> {app.acessibilidade.map(ac=> <Pill key={ac}>{ac}</Pill>)}</div>
+                    <div className="flex flex-wrap gap-2 mt-1"><strong>Recursos:</strong> {app.acessibilidade.map(ac=> <Pill key={ac}>{ac}</Pill>)}</div>
                   </div>
                 </div>
                 <div className="rounded-2xl border p-3">
@@ -428,7 +428,7 @@
                   {!!avs.length && (
                     <div className="mt-3 border-t pt-2 text-sm space-y-1">
                       {avs.map((a,i)=> (
-                        <div key={i} className="rounded-lg border p-2">
+                        <div key={i} className="rounded-lg border p-2 bg-slate-50">
                           <div className="flex items-center gap-2"><strong>Nota:</strong> {a.nota} / 5</div>
                           {a.comentario && <p className="text-slate-600 mt-1">{a.comentario}</p>}
                         </div>
@@ -437,18 +437,6 @@
                   )}
                 </div>
               </aside>
-            </div>
-          </div>
-
-          <div className="rounded-3xl border p-4">
-            <h3 className="font-semibold mb-2">Recomendações relacionadas</h3>
-            <div className="flex flex-wrap gap-3">
-              {MOCK_APPS.filter(a=> a.id!==app.id && a.categorias.some(c=> app.categorias.includes(c))).map(a=> (
-                <div key={a.id} className="rounded-2xl border px-3 py-2 text-sm inline-flex items-center gap-2">
-                  <span>{a.nome}</span>
-                  <span className="text-xs text-slate-500">{a.categorias[0]}</span>
-                </div>
-              ))}
             </div>
           </div>
         </section>
@@ -461,10 +449,10 @@
           <h2 className="font-bold text-lg">Top Apps mais bem avaliados</h2>
           <div className="mt-3 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {items.slice().sort((a,b)=> b.rating - a.rating).slice(0,6).map(a=> (
-              <div key={a.id} className="rounded-3xl border p-4">
+              <div key={a.id} className="rounded-3xl border p-4 bg-white">
                 <div className="flex items-start justify-between">
                   <h3 className="font-semibold">{a.nome}</h3>
-                  <button className="text-sm underline" onClick={()=>onOpen(a.id)}>Abrir</button>
+                  <button className="text-sm underline text-blue-600" onClick={()=>onOpen(a.id)}>Abrir</button>
                 </div>
                 <div className="mt-1"><Stars value={a.rating}/><span className="text-xs text-slate-500">({a.votos})</span></div>
                 <p className="text-sm text-slate-600 mt-1">{a.descricao}</p>
@@ -478,7 +466,7 @@
     function Guia(){
       return (
         <section className="space-y-4">
-          <div className="rounded-3xl border p-4">
+          <div className="rounded-3xl border p-4 bg-white">
             <h2 className="font-bold text-lg">📘 Como navegar no catálogo</h2>
             <ol className="list-decimal pl-6 text-sm mt-2 space-y-1">
               <li>Use a busca para encontrar um app conhecido.</li>
@@ -488,13 +476,13 @@
               <li>Instale, salve nos favoritos ou recomende.</li>
             </ol>
           </div>
-          <div className="rounded-3xl border p-4">
+          <div className="rounded-3xl border p-4 bg-white">
             <h3 className="font-semibold mb-2">Glossário rápido</h3>
             <dl className="grid sm:grid-cols-2 gap-3 text-sm">
-              <div><dt className="font-medium">CAA</dt><dd>Comunicação Alternativa e Ampliada por símbolos/pictogramas.</dd></div>
-              <div><dt className="font-medium">Baixo estímulo sensorial</dt><dd>Interface com poucos elementos, animações suaves e sons opcionais.</dd></div>
-              <div><dt className="font-medium">Leitura simples</dt><dd>Textos resumidos, diretos, sem metáforas.</dd></div>
-              <div><dt className="font-medium">Checklist inclusiva</dt><dd>Lista de verificação rápida de recursos de acessibilidade.</dd></div>
+              <div><dt className="font-medium text-blue-600">CAA</dt><dd>Comunicação Alternativa e Ampliada por símbolos/pictogramas.</dd></div>
+              <div><dt className="font-medium text-blue-600">Baixo estímulo sensorial</dt><dd>Interface com poucos elementos, animações suaves e sons opcionais.</dd></div>
+              <div><dt className="font-medium text-blue-600">Leitura simples</dt><dd>Textos resumidos, diretos, sem metáforas.</dd></div>
+              <div><dt className="font-medium text-blue-600">Checklist inclusiva</dt><dd>Lista de verificação rápida de recursos de acessibilidade.</dd></div>
             </dl>
           </div>
         </section>
@@ -504,20 +492,17 @@
     function Comunidade(){
       return (
         <section className="space-y-4">
-          <div className="rounded-3xl border p-4">
+          <div className="rounded-3xl border p-4 bg-white">
             <h2 className="font-bold text-lg">👥 Experiências de Usuários</h2>
             <ul className="mt-2 space-y-2 text-sm">
-              <li className="rounded-2xl border p-3"><strong>Prof. Ana</strong>: Usei o Calma+ antes das aulas e ajudou a reduzir ansiedade.</li>
-              <li className="rounded-2xl border p-3"><strong>Thiago (pai)</strong>: O Alfabetiza Fácil foi útil em sessões curtas em casa.</li>
+              <li className="rounded-2xl border p-3 bg-slate-50"><strong>Prof. Ana</strong>: Usei o Calma+ antes das aulas e ajudou a reduzir ansiedade.</li>
+              <li className="rounded-2xl border p-3 bg-slate-50"><strong>Thiago (pai)</strong>: O Alfabetiza Fácil foi útil em sessões curtas em casa.</li>
             </ul>
           </div>
-          <div className="rounded-3xl border p-4">
+          <div className="rounded-3xl border p-4 bg-white">
             <h3 className="font-semibold mb-2">💬 Fórum de dúvidas rápidas</h3>
             <p className="text-sm text-slate-600">(Protótipo) Campo de pergunta e respostas com moderação.</p>
-            <input className="mt-2 w-full rounded-2xl border px-3 py-2" placeholder="Escreva sua dúvida..." />
-            <div className="mt-2 flex justify-end">
-              <button className="btn">Enviar</button>
-            </div>
+            <input className="mt-2 w-full rounded-2xl border px-3 py-2" placeholder="Escreva sua dúvida..." disabled />
           </div>
         </section>
       );
@@ -526,17 +511,13 @@
     function Sobre(){
       return (
         <section className="space-y-4">
-          <div className="rounded-3xl border p-4">
+          <div className="rounded-3xl border p-4 bg-white">
             <h2 className="font-bold text-lg">Missão e objetivos</h2>
             <p className="text-sm text-slate-700 mt-1">Facilitar a descoberta e adoção de tecnologias úteis para pessoas autistas, familiares e profissionais, com foco em acessibilidade e usabilidade inclusiva.</p>
           </div>
-          <div className="rounded-3xl border p-4">
+          <div className="rounded-3xl border p-4 bg-white">
             <h3 className="font-semibold">Parceiros e referências</h3>
             <p className="text-sm text-slate-700 mt-1">(Espaço para logos e links de parceiros, diretrizes de acessibilidade e referências científicas).</p>
-          </div>
-          <div className="rounded-3xl border p-4">
-            <h3 className="font-semibold">Contato / suporte</h3>
-            <p className="text-sm text-slate-700 mt-1">email@exemplo.org — suporte via formulário acessível.</p>
           </div>
         </section>
       );
@@ -544,8 +525,8 @@
 
     function Footer(){
       return (
-        <footer className="mt-10 border-t">
-          <div className="mx-auto max-w-6xl p-4 text-xs text-slate-500">© {new Date().getFullYear()} Catálogo TEA — Demo estática</div>
+        <footer className="mt-10 border-t bg-white">
+          <div className="mx-auto max-w-6xl p-4 text-xs text-slate-500">© 2026 Catálogo TEA — Demo estática</div>
         </footer>
       );
     }
@@ -565,7 +546,7 @@
               <ToggleRow label="Reduzir animações" checked={prefs.reduzirAnimacoes} onChange={(v)=>setPrefs({...prefs, reduzirAnimacoes:v})} />
             </div>
             <div className="mt-4 flex justify-end">
-              <button className="btn" onClick={onClose}>Aplicar</button>
+              <button className="btn bg-slate-900 text-white" onClick={onClose}>Aplicar</button>
             </div>
           </div>
         </div>
@@ -581,7 +562,11 @@
       );
     }
 
-    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    try {
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    } catch(e) {
+      console.error("Erro ao carregar o React localmente:", e);
+    }
   </script>
 </body>
 </html>
