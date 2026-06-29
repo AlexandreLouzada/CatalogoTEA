@@ -1,176 +1,278 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Protótipo de catálogo digital de aplicativos para pessoas autistas." />
-  <title>Catálogo TEA — Protótipo</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Catálogo digital de tecnologias para pessoas autistas — buscar, comparar e avaliar.">
+  <title>Catálogo TEA</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <a class="skip-link" href="#conteudo">Pular para o conteúdo principal</a>
 
   <header class="app-header">
     <div class="container header-inner">
-      <button class="brand" data-route="home" aria-label="Ir para a página inicial">
+      <button class="brand" data-route="inicio" aria-label="Ir para a página inicial">
         <span class="brand-icon" aria-hidden="true">◆</span>
         <span>Catálogo TEA</span>
       </button>
-
       <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mainNav">Menu</button>
-
       <nav id="mainNav" class="main-nav" aria-label="Navegação principal">
-        <button data-route="home" class="nav-link active">Home</button>
-        <button data-route="buscar" class="nav-link">Buscar Apps</button>
-        <button data-route="lista" class="nav-link">Lista</button>
-        <button data-route="recomendacoes" class="nav-link">Recomendações</button>
-        <button data-route="guia" class="nav-link">Guia</button>
-        <button data-route="comunidade" class="nav-link">Comunidade</button>
-        <button data-route="sobre" class="nav-link">Sobre</button>
+        <button data-route="inicio" class="nav-link">Início</button>
+        <button data-route="buscar" class="nav-link">Buscar Tecnologias</button>
+        <button data-route="comparar" class="nav-link">Comparar</button>
+        <button data-route="submeter" class="nav-link">Submeter & Curadoria</button>
+        <button data-route="relatorios" class="nav-link">Relatórios</button>
+        <button data-route="ajuda" class="nav-link">Ajuda & Acessibilidade</button>
+        <button data-route="sobre" class="nav-link">Sobre & Políticas</button>
       </nav>
-
-      <button id="openPrefs" class="button button-secondary">Preferências</button>
+      <button id="openPrefs" class="button button-secondary" aria-label="Preferências de acessibilidade">Acessibilidade</button>
     </div>
   </header>
 
-  <div id="focusBanner" class="focus-banner hidden">
-    Modo foco ativo: a interface está exibindo menos distrações.
-  </div>
+  <div id="focusBanner" class="focus-banner hidden">Modo foco ativo: a interface está exibindo menos distrações.</div>
 
   <main id="conteudo" class="container app-main" tabindex="-1">
-    <section id="viewHome" class="view active" aria-labelledby="homeTitle">
+
+    <!-- ==================== INÍCIO ==================== -->
+    <section id="viewInicio" class="view active" aria-labelledby="inicioTitle">
       <div class="hero">
         <div class="hero-content">
-          <p class="eyebrow">Protótipo de arquitetura de informação e UX inclusiva</p>
-          <h1 id="homeTitle">Catálogo de Aplicativos para Pessoas Autistas</h1>
-          <p class="hero-text">
-            Encontre, compare e avalie aplicativos de educação, comunicação alternativa, habilidades sociais,
-            regulação emocional e apoio terapêutico, com foco em usabilidade inclusiva.
-          </p>
+          <p class="eyebrow">Catálogo digital de tecnologias para pessoas autistas</p>
+          <h1 id="inicioTitle">Tecnologias para TEA — informação para decisão responsável</h1>
+          <p class="hero-text">Encontre, compare e avalie tecnologias de comunicação, educação, habilidades sociais, regulação emocional e apoio terapêutico com transparência e acessibilidade.</p>
           <div class="hero-actions">
-            <button class="button button-primary" data-route="buscar">Começar agora</button>
-            <button class="button button-secondary" data-route="recomendacoes">Ver recomendações</button>
+            <button class="button button-primary" data-route="buscar">Buscar Tecnologias</button>
+            <button class="button button-secondary" data-route="comparar">Comparar</button>
           </div>
-          <ul class="feature-list">
-            <li>Filtros por categoria, faixa etária e acessibilidade.</li>
-            <li>Checklist de usabilidade inclusiva em cada app.</li>
-            <li>Modo foco, leitura simples e alto contraste.</li>
-          </ul>
         </div>
-        <aside class="hero-panel" aria-label="Aplicativos em destaque">
+        <aside class="hero-panel" aria-label="Tecnologias em destaque">
           <h2>Destaques</h2>
-          <div id="homeHighlights" class="highlight-grid"></div>
+          <div id="homeHighlights" class="apps-grid"></div>
         </aside>
       </div>
+      <div class="card" style="margin-top:18px">
+        <h2>Como funciona</h2>
+        <div class="feature-list">
+          <p><strong>1.</strong> Busque por nome ou use os filtros para refinar sua procura.</p>
+          <p><strong>2.</strong> Abra a ficha completa da tecnologia para ver objetivos, público, evidências e requisitos.</p>
+          <p><strong>3.</strong> Compare até 3 tecnologias lado a lado para apoiar sua decisão.</p>
+          <p><strong>4.</strong> Contribua submetendo novas tecnologias para curadoria.</p>
+        </div>
+      </div>
     </section>
 
+    <!-- ==================== BUSCAR TECNOLOGIAS ==================== -->
     <section id="viewBuscar" class="view" aria-labelledby="buscarTitle">
       <div class="section-header">
-        <h1 id="buscarTitle">Buscar Aplicativos</h1>
-        <p>Use a busca textual ou selecione filtros para encontrar aplicativos adequados ao contexto de uso.</p>
+        <h1 id="buscarTitle">Catálogo TEA — Buscar Tecnologias</h1>
       </div>
-      <form id="searchForm" class="search-panel">
-        <label for="searchInput">Nome do aplicativo ou palavra-chave</label>
-        <div class="search-row">
-          <input id="searchInput" type="search" placeholder="Ex.: comunicação, alfabetização, pictogramas" />
-          <button class="button button-primary" type="submit">Buscar</button>
+      <div class="search-bar">
+        <input type="search" id="buscarInput" placeholder="Buscar..." aria-label="Buscar tecnologias">
+        <button class="button button-primary" id="btnPesquisar">Pesquisar</button>
+        <button class="button button-secondary" id="btnLimpar">Limpar</button>
+        <button class="button button-secondary" id="btnBuscarAcessibilidade">Acessibilidade</button>
+      </div>
+      <div class="buscar-layout">
+        <aside class="facet-sidebar" aria-label="Filtros">
+          <button class="facet-toggle-mobile" id="facetToggle" aria-expanded="false">Filtros <span aria-hidden="true">▾</span></button>
+          <div class="facet-groups" id="facetGroups"></div>
+          <p class="facet-footer">Requisitos / Idioma / Custo / Evidência</p>
+        </aside>
+        <div class="buscar-results">
+          <div class="filters-active" id="activeFilters"></div>
+          <p id="resultCount" class="result-count">Carregando...</p>
+          <div id="resultsGrid" class="results-grid"></div>
+          <div id="pagination" class="pagination"></div>
         </div>
-      </form>
-      <div class="filters-grid">
-        <fieldset class="filter-card"><legend>Categoria</legend><div id="categoryFilters" class="checkbox-list"></div></fieldset>
-        <fieldset class="filter-card"><legend>Idade/Público</legend><div id="ageFilters" class="checkbox-list"></div></fieldset>
-        <fieldset class="filter-card"><legend>Acessibilidade</legend><div id="accessFilters" class="checkbox-list"></div><p class="hint">Dica: “baixo estímulo sensorial” ajuda a reduzir sobrecarga visual e sonora.</p></fieldset>
-      </div>
-      <div class="right-actions">
-        <button class="button button-secondary" id="clearFilters">Limpar filtros</button>
-        <button class="button button-primary" data-route="lista">Ver resultados</button>
       </div>
     </section>
 
-    <section id="viewLista" class="view" aria-labelledby="listaTitle">
-      <div class="section-header row-between">
-        <div><h1 id="listaTitle">Lista de Aplicativos</h1><p id="resultCount">Carregando aplicativos...</p></div>
-        <button class="button button-secondary" data-route="buscar">Ajustar filtros</button>
-      </div>
-      <div id="appsGrid" class="apps-grid"></div>
-    </section>
-
-    <section id="viewDetalhe" class="view" aria-labelledby="detailTitle">
-      <button class="text-button" data-route="lista">← Voltar para a lista</button>
-      <article id="detailContent" class="detail-layout"></article>
-    </section>
-
-    <section id="viewRecomendacoes" class="view" aria-labelledby="recTitle">
+    <!-- ==================== FICHA DA TECNOLOGIA ==================== -->
+    <section id="viewFicha" class="view" aria-labelledby="fichaTitle">
       <div class="section-header">
-        <h1 id="recTitle">Avaliações e Recomendações</h1>
-        <p>Apps ordenados por avaliação, com destaque para acessibilidade e finalidade de uso.</p>
+        <h1 id="fichaTitle">Catálogo TEA — Ficha da Tecnologia</h1>
       </div>
-      <div id="recommendationsGrid" class="apps-grid"></div>
+      <button class="text-button" data-route="buscar">← Voltar para busca</button>
+      <article id="fichaContent" class="ficha-content"></article>
     </section>
 
-    <section id="viewGuia" class="view" aria-labelledby="guideTitle">
-      <div class="section-header"><h1 id="guideTitle">Guia de Uso</h1><p>Orientações rápidas para ajudar usuários, familiares e profissionais a navegar no catálogo.</p></div>
+    <!-- ==================== COMPARAR TECNOLOGIAS ==================== -->
+    <section id="viewComparar" class="view" aria-labelledby="compararTitle">
+      <div class="section-header">
+        <h1 id="compararTitle">Catálogo TEA — Comparar Tecnologias</h1>
+        <p id="compareInstruction">Selecione até 3 itens para comparar.</p>
+      </div>
+      <div id="compareSelector" class="compare-selector"></div>
+      <div id="compareContent">
+        <div id="compareEmpty" class="compare-empty card">
+          <p>Nenhuma tecnologia selecionada. Use a <button class="text-button" data-route="buscar">busca</button> para encontrar tecnologias e adicioná-las à comparação.</p>
+        </div>
+        <div id="compareTableWrapper" class="compare-table-wrapper hidden">
+          <div class="table-scroll">
+            <table class="compare-table" id="compareTable">
+              <thead id="compareHead"></thead>
+              <tbody id="compareBody"></tbody>
+            </table>
+          </div>
+          <div class="compare-actions">
+            <button class="button button-secondary" id="exportCSV">Exportar CSV</button>
+            <button class="button button-secondary" id="exportPDF">Gerar Relatório (PDF)</button>
+            <button class="button button-primary" id="saveCompare">Salvar Comparação</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SUBMETER & CURADORIA ==================== -->
+    <section id="viewSubmeter" class="view" aria-labelledby="submeterTitle">
+      <div class="section-header">
+        <h1 id="submeterTitle">Catálogo TEA — Submeter & Curadoria</h1>
+        <p>Contribua com novas tecnologias para o catálogo. Preencha os dados nos passos abaixo.</p>
+      </div>
+      <div class="step-indicator" id="stepIndicator">
+        <span class="step active" data-step="1">Identificação</span>
+        <span class="step-arrow" aria-hidden="true">→</span>
+        <span class="step" data-step="2">Metadados</span>
+        <span class="step-arrow" aria-hidden="true">→</span>
+        <span class="step" data-step="3">Evidência & Acc.</span>
+        <span class="step-arrow" aria-hidden="true">→</span>
+        <span class="step" data-step="4">Revisão & Envio</span>
+      </div>
+      <div class="card step-form" id="submitFormContainer">
+        <form id="submitForm" novalidate>
+          <div class="step-form-page active" data-page="1">
+            <h2>Identificação da Tecnologia</h2>
+            <div class="form-grid">
+              <label>Nome da tecnologia *<input id="subNome" required></label>
+              <label>Versão <input id="subVersao" placeholder="Ex.: 2.1.0"></label>
+              <label>Fornecedor *<input id="subFornecedor" required></label>
+              <label>Site / Link <input id="subLink" type="url" placeholder="https://"></label>
+            </div>
+          </div>
+          <div class="step-form-page" data-page="2">
+            <h2>Metadados</h2>
+            <div class="form-grid">
+              <label>Categoria tecnológica<select id="subCategoria"><option>Apps/Plataformas Web</option><option>CAA</option><option>Jogos Sérios</option><option>RV/RA</option><option>Robótica</option><option>Vestíveis</option><option>IA</option></select></label>
+              <label>Objetivo principal<select id="subObjetivo"><option>Comunicação</option><option>Habilidades Sociais</option><option>Autorregulação</option><option>Funções Executivas</option><option>Alfabetização</option><option>Vida Diária</option></select></label>
+              <label>Público-alvo<select id="subPublico"><option>Crianças</option><option>Adolescentes</option><option>Adultos</option><option>Todos</option></select></label>
+              <label>Nível de apoio<select id="subNivel"><option>Nível 1</option><option>Nível 2</option><option>Nível 3</option><option>Todos</option></select></label>
+              <label>Contexto de uso<select id="subContexto"><option>Escola</option><option>Clínica</option><option>Domicílio</option><option>Múltiplos</option></select></label>
+              <label>Modelo de licença<select id="subPreco"><option>Gratuito</option><option>Freemium</option><option>Pago</option><option>Assinatura</option></select></label>
+            </div>
+          </div>
+          <div class="step-form-page" data-page="3">
+            <h2>Evidência & Acessibilidade</h2>
+            <div class="form-grid">
+              <label>Tipo de evidência<select id="subEvidencia"><option>Não disponível</option><option>Relato de caso</option><option>Estudo piloto</option><option>Quase-experimental</option><option>Ensaio clínico</option><option>Revisão sistemática</option></select></label>
+              <label>Recursos de acessibilidade<div class="checkbox-list" id="subAccessCheckboxes"></div></label>
+            </div>
+          </div>
+          <div class="step-form-page" data-page="4">
+            <h2>Revisão & Envio</h2>
+            <div id="submitReview" class="submit-review"></div>
+          </div>
+          <div class="step-nav">
+            <button type="button" class="button button-secondary" id="stepPrev">Anterior</button>
+            <button type="button" class="button button-primary" id="stepNext">Próximo</button>
+            <button type="submit" class="button button-primary hidden" id="stepSubmit">Enviar para curadoria</button>
+          </div>
+        </form>
+        <p id="submitFeedback" class="success-message hidden">Tecnologia submetida com sucesso! Ela será revisada pela equipe de curadoria.</p>
+      </div>
+    </section>
+
+    <!-- ==================== RELATÓRIOS ==================== -->
+    <section id="viewRelatorios" class="view" aria-labelledby="relatoriosTitle">
+      <div class="section-header">
+        <h1 id="relatoriosTitle">Catálogo TEA — Relatórios</h1>
+        <p>Indicadores de cobertura e atualização do catálogo.</p>
+      </div>
+      <div id="reportGrid" class="report-grid"></div>
+    </section>
+
+    <!-- ==================== AJUDA & ACESSIBILIDADE ==================== -->
+    <section id="viewAjuda" class="view" aria-labelledby="ajudaTitle">
+      <div class="section-header">
+        <h1 id="ajudaTitle">Catálogo TEA — Ajuda & Acessibilidade</h1>
+      </div>
       <div class="two-columns">
         <article class="card">
-          <h2>Como navegar</h2>
-          <ol class="steps">
-            <li>Use a busca quando já souber o nome do aplicativo.</li>
-            <li>Use os filtros quando quiser descobrir novas opções.</li>
-            <li>Abra a página do app e confira finalidade, público e acessibilidade.</li>
-            <li>Leia exemplos de uso e avaliações.</li>
-            <li>Depois de experimentar, contribua com sua avaliação.</li>
-          </ol>
+          <h2>Guias de Uso</h2>
+          <p>Orientações rápidas para navegar no catálogo.</p>
+          <ul class="guide-list">
+            <li><strong>Buscar:</strong> digite o nome ou palavra-chave no campo de busca. Use os filtros na lateral para refinar por categoria, objetivo, público, nível de apoio, contexto ou acessibilidade.</li>
+            <li><strong>Ficha:</strong> clique em "Ver detalhes" em qualquer card para abrir a ficha completa com objetivos, público, evidências, requisitos e muito mais.</li>
+            <li><strong>Comparar:</strong> marque até 3 tecnologias e vá para a tela de Comparar para visualizá-las lado a lado.</li>
+            <li><strong>Submeter:</strong> use o formulário em etapas para sugerir uma nova tecnologia para o catálogo.</li>
+          </ul>
         </article>
         <article class="card">
-          <h2>Glossário</h2>
-          <dl class="glossary">
-            <dt>CAA</dt><dd>Comunicação Alternativa e Ampliada por símbolos, imagens ou pictogramas.</dd>
-            <dt>Baixo estímulo sensorial</dt><dd>Interface com menos sons, animações e elementos visuais simultâneos.</dd>
-            <dt>Leitura simples</dt><dd>Texto direto, curto e sem metáforas desnecessárias.</dd>
-          </dl>
+          <h2>Configurações de Acessibilidade</h2>
+          <p>Ajuste a interface às suas preferências.</p>
+          <label class="toggle-row"><span><strong>Alto contraste</strong><small>Aumenta o contraste entre texto e fundo.</small></span><input type="checkbox" id="ajContraste"></label>
+          <label class="toggle-row"><span><strong>Modo foco</strong><small>Reduz distrações e centraliza o conteúdo.</small></span><input type="checkbox" id="ajFoco"></label>
+          <label class="toggle-row"><span><strong>Leitura Fácil</strong><small>Descrições mais curtas e diretas.</small></span><input type="checkbox" id="ajLeituraFacil"></label>
+          <label class="toggle-row"><span><strong>Reduzir animações</strong><small>Evita transições visuais desnecessárias.</small></span><input type="checkbox" id="ajAnimacoes"></label>
         </article>
       </div>
+      <article class="card" style="margin-top:18px">
+        <h2>Glossário</h2>
+        <dl class="glossary">
+          <dt>CAA</dt><dd>Comunicação Alternativa e Ampliada — uso de símbolos, imagens ou dispositivos para apoiar ou substituir a fala.</dd>
+          <dt>A11y</dt><dd>Abreviação de "Accessibility" (acessibilidade). O número 11 representa as letras entre A e Y.</dd>
+          <dt>Nível de Apoio</dt><dd>Classificação do grau de suporte: 1 (requer apoio), 2 (requer apoio substancial), 3 (requer apoio muito substancial).</dd>
+          <dt>Leitura Fácil</dt><dd>Adaptação de textos para linguagem simples, direta e com frases curtas.</dd>
+          <dt>Baixo estímulo sensorial</dt><dd>Interface com menos sons, animações e elementos visuais simultâneos.</dd>
+        </dl>
+      </article>
     </section>
 
-    <section id="viewComunidade" class="view" aria-labelledby="communityTitle">
-      <div class="section-header"><h1 id="communityTitle">Comunidade</h1><p>Espaço para experiências, dúvidas rápidas e sugestão de novos aplicativos.</p></div>
-      <div class="two-columns">
-        <article class="card">
-          <h2>Experiências de usuários</h2>
-          <div class="comment"><strong>Prof. Ana</strong><p>Usei o Calma+ antes das aulas e percebi melhor adaptação à transição de atividades.</p></div>
-          <div class="comment"><strong>Thiago, pai</strong><p>O Rotina Visual ajudou a organizar a manhã com menos conflitos.</p></div>
-        </article>
-        <article class="card">
-          <h2>Sugira um app</h2>
-          <form id="suggestForm" class="stack-form">
-            <label for="suggestName">Nome do aplicativo</label>
-            <input id="suggestName" type="text" placeholder="Ex.: nome do app" />
-            <label for="suggestReason">Por que ele deve entrar no catálogo?</label>
-            <textarea id="suggestReason" rows="4" placeholder="Descreva brevemente a finalidade e o público."></textarea>
-            <button type="submit" class="button button-primary">Enviar sugestão</button>
-          </form>
-          <p id="suggestFeedback" class="success-message hidden">Sugestão registrada no protótipo.</p>
-        </article>
+    <!-- ==================== SOBRE & POLÍTICAS ==================== -->
+    <section id="viewSobre" class="view" aria-labelledby="sobreTitle">
+      <div class="section-header">
+        <h1 id="sobreTitle">Catálogo TEA — Sobre & Políticas</h1>
       </div>
-    </section>
-
-    <section id="viewSobre" class="view" aria-labelledby="aboutTitle">
-      <div class="section-header"><h1 id="aboutTitle">Sobre o Projeto</h1><p>Este protótipo representa um catálogo digital para apoiar a seleção e adoção de aplicativos voltados a pessoas autistas.</p></div>
-      <div class="card"><h2>Missão</h2><p>Facilitar a descoberta de tecnologias digitais com informações organizadas sobre finalidade, público, acessibilidade, plataformas, exemplos de uso e avaliações de usuários.</p></div>
-      <div class="card"><h2>Observação importante</h2><p>Os aplicativos apresentados neste protótipo são exemplos para validação de fluxo, conteúdo e interface. Em uma versão real, as informações precisam ser verificadas em fontes oficiais e por avaliação empírica.</p></div>
+      <div class="card"><h2>Metodologia</h2><p>Este catálogo foi desenvolvido seguindo o método <em>Design Science Research</em> (DSR), com revisão sistemática da literatura e estudo de caso com perfis de usuários (educadores, pessoas autistas e familiares/cuidadores).</p></div>
+      <div class="card"><h2>Governança e Curadoria</h2><p>As tecnologias são revisadas por uma equipe especializada. Cada entrada inclui proveniência (fonte), data da última revisão e histórico de alterações para garantir transparência e rastreabilidade.</p></div>
+      <div class="card"><h2>LGPD e Privacidade</h2><p>Este catálogo não coleta dados pessoais dos usuários. Preferências, favoritos e avaliações são armazenados localmente no navegador e podem ser removidos a qualquer momento.</p></div>
+      <div class="card"><h2>Como citar este catálogo</h2><p><strong>ABNT:</strong> LOUZADA, [Nome]. Catálogo TEA: catálogo digital de tecnologias para pessoas autistas. 2025.</p><p><strong>APA:</strong> Louzada, [Nome]. (2025). Catálogo TEA. https://...</p></div>
     </section>
   </main>
 
+  <!-- ==================== PREFERENCES MODAL ==================== -->
   <div id="prefsModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="prefsTitle">
     <section class="modal">
-      <div class="modal-header"><h2 id="prefsTitle">Preferências de Acessibilidade</h2><button id="closePrefs" class="icon-button" aria-label="Fechar preferências">×</button></div>
-      <label class="toggle-row"><span><strong>Modo foco</strong><small>Reduz distrações e centraliza o conteúdo.</small></span><input type="checkbox" id="prefFocus" /></label>
-      <label class="toggle-row"><span><strong>Leitura simples</strong><small>Exibe descrições mais curtas e diretas.</small></span><input type="checkbox" id="prefSimple" /></label>
-      <label class="toggle-row"><span><strong>Alto contraste</strong><small>Aumenta contraste entre texto, fundo e bordas.</small></span><input type="checkbox" id="prefContrast" /></label>
-      <label class="toggle-row"><span><strong>Reduzir animações</strong><small>Evita transições visuais desnecessárias.</small></span><input type="checkbox" id="prefMotion" checked /></label>
+      <div class="modal-header">
+        <h2 id="prefsTitle">Preferências de Acessibilidade</h2>
+        <button id="closePrefs" class="icon-button" aria-label="Fechar preferências">×</button>
+      </div>
+      <label class="toggle-row"><span><strong>Modo foco</strong><small>Reduz distrações e centraliza o conteúdo.</small></span><input type="checkbox" id="prefFocus"></label>
+      <label class="toggle-row"><span><strong>Leitura Fácil</strong><small>Descrições mais curtas e diretas.</small></span><input type="checkbox" id="prefFacil"></label>
+      <label class="toggle-row"><span><strong>Alto contraste</strong><small>Aumenta o contraste entre texto, fundo e bordas.</small></span><input type="checkbox" id="prefContrast"></label>
+      <label class="toggle-row"><span><strong>Reduzir animações</strong><small>Evita transições visuais desnecessárias.</small></span><input type="checkbox" id="prefMotion" checked></label>
       <div class="right-actions"><button id="applyPrefs" class="button button-primary">Aplicar</button></div>
     </section>
   </div>
+
+  <!-- ==================== CITE MODAL ==================== -->
+  <div id="citeModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="citeTitle">
+    <section class="modal cite-modal">
+      <div class="modal-header">
+        <h2 id="citeTitle">Citar tecnologia</h2>
+        <button id="closeCite" class="icon-button" aria-label="Fechar">×</button>
+      </div>
+      <div class="cite-format-tabs" role="tablist">
+        <button class="cite-format-btn active" role="tab" data-format="abnt">ABNT</button>
+        <button class="cite-format-btn" role="tab" data-format="apa">APA</button>
+        <button class="cite-format-btn" role="tab" data-format="bibtex">BibTeX</button>
+      </div>
+      <div class="cite-output" id="citeOutput" readonly></div>
+      <button class="button button-primary" id="citeCopy">Copiar</button>
+    </section>
+  </div>
+
+  <div id="tooltipContainer" class="tooltip-container hidden" role="tooltip"></div>
 
   <script src="app.js"></script>
 </body>
